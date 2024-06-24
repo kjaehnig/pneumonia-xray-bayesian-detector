@@ -80,7 +80,7 @@ def make_predictions(model, image, n_iter):
     return predicted_probabilities
 
 # Streamlit app
-st.title("Pneumonia Detection Probability")
+st.title("Bayesian Pneumonia Detection from Xrays")
 st.sidebar.title("Settings")
 
 # Sidebar slider for number of predictions
@@ -156,4 +156,4 @@ if selected_image_file and predict_image:
 
     st.pyplot(fig)
 
-    st.write(f"Prediction Probabilities: Normal - {pct_50[0]:.2f}, Pneumonia - {pct_50[1]:.2f}")
+    st.write(f"Prediction Probabilities: Normal - {pct_50[0]:.2f} ({pct_2p5[0]:.2f}, {pct_97p5[0]:.2f}), Pneumonia - {pct_50[1]:.2f} ({pct_2p5[1]:.2f}, {pct_97p5[1]:.2f})")
