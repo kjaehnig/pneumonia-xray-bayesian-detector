@@ -76,10 +76,9 @@ if selected_image_file and predict_image:
     image = data['x']
     true_label = np.argmax(data['y']).astype('int')
     # img = tf.image.resize(image, [299, 299, 3])  # Adjust size if necessary
-    img = image / 255.0  # Normalize the image
 
     # Make predictions
-    predicted_probabilities = make_predictions(model, img, n_iter)
+    predicted_probabilities = make_predictions(model, image, n_iter)
 
     # Calculate percentiles
     pct_2p5 = np.percentile(predicted_probabilities, 2.5, axis=0)
@@ -94,7 +93,7 @@ if selected_image_file and predict_image:
 
     # Display results
     st.image(
-        img.reshape(299, 299, 3),
+        img.reshape(299, 299, 3)/255.,
         caption=f'Selected Image: {pred_label}',
         use_column_width=True,
         clamp=True,
@@ -105,12 +104,19 @@ if selected_image_file and predict_image:
     fig, ax = plt.subplots()
     bar = ax.bar(np.arange(2), pct_97p5, color='red')
     bar[true_int].set_color('green')
-    ax.bar(np.arange(2), pct_2p5 - 0.02, lw=3, color='white')
+    ax.bar(np.arange(2), pct_2p5 - 0.03, lw=3, color='white')
     ax.set_xticks(np.arange(2))
     ax.set_xticklabels(class_names)
     ax.set_ylim([0, 1])
     ax.set_ylabel('Probability', fontweight='bold')
-    ax.set_title(f"Prediction: {pred_label}", color='green' if pred_int == true_int else 'red', fontweight='bold')
+    # ax.set_xlabel(
+    #     f"{'CORRECT' if true_int == pred_int else 'INCORRECT'} Prediction",
+    #     color='green' if true_int == pred_int else 'red',
+    #     fontweight='bold')
+    ax.set_title(
+        f"{'CORRECT' if true_int == pred_int else 'INCORRECT'} Prediction: {pred_label}",
+        color='green' if pred_int == true_int else 'red',
+        fontweight='bold')
 
     st.pyplot(fig)
 
