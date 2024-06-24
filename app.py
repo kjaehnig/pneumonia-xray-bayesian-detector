@@ -93,7 +93,13 @@ if selected_image_file and predict_image:
     pred_label = class_names[pred_int]
 
     # Display results
-    st.image(image.reshape(299, 299, 3), caption=f'Selected Image: {pred_label}', use_column_width=True)
+    st.image(
+        image.reshape(299, 299, 3),
+        caption=f'Selected Image: {pred_label}',
+        use_column_width=True,
+        clamp=True,
+        channels='BGR'
+    )
 
     # Plot probabilities
     fig, ax = plt.subplots()
