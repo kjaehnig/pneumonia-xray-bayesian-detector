@@ -19,7 +19,7 @@ custom_objs = {
     'neg_loglike': lambda x,y: -y.log_prob(x),
     'divergence': lambda q,p: trd.divergence(q, p) / 5216.
 }
-model = load_model("trained_model", compile=True, custom_objects=custom_objs)
+# model = load_model("trained_model", compile=True, custom_objects=custom_objs)
 
 @st.cache_resource
 def load_model_into_streamlit():
@@ -27,9 +27,11 @@ def load_model_into_streamlit():
     with st.spinner("Loading TensorFlow model..."):
         from pneumonia_bcnn_detector import build_mdl
 
+        @tf.function
         def neg_loglike(ytrue, ypred):
             return -ypred.log_prob(ytrue)
 
+        @tf.function
         def divergence(q, p, _):
             return tfd.kl_divergence(q, p) / 6214.
 
