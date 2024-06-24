@@ -32,7 +32,7 @@ def load_model_into_streamlit():
         def divergence(q, p, _):
             return tfd.kl_divergence(q, p) / 6214.
 
-        model = build_mdl
+        model = build_mdl()
 
         with open("trained_model/trained_model_weights.pk", 'rb') as whts:
             weights_pk = pk.load(whts)
