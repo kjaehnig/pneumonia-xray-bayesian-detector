@@ -152,22 +152,22 @@ if selected_image_file and predict_image:
 
     # Display results
     if use_modified_img:
-        with st.columns(2) as col:
-            col[0].image(
-                image/255.,
-                caption=f'Selected Image: {class_names[true_int]} (original)',
-                use_column_width=True,
-                # width=img_size[0],
-                clamp=True,
-                channels='BGR'
-            )
-            col[1].image(
-                pred_image/255.,
-                caption=f'Selected Image: {class_names[true_int]} (modified)',
-                use_column_width=True,
-                clamp=True,
-                channels='BGR'
-            )
+        img_cols = st.columns(2)
+        img_cols[0].image(
+            image/255.,
+            caption=f'Selected Image: {class_names[true_int]} (original)',
+            use_column_width=True,
+            # width=img_size[0],
+            clamp=True,
+            channels='BGR'
+        )
+        img_cols[1].image(
+            pred_image/255.,
+            caption=f'Selected Image: {class_names[true_int]} (modified)',
+            use_column_width=True,
+            clamp=True,
+            channels='BGR'
+        )
     else:
         st.image(
             image/255.,
