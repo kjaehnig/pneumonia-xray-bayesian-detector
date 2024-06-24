@@ -85,8 +85,8 @@ n_iter = st.sidebar.slider("Number of Predictions", min_value=2, max_value=50, v
 
 # Dropdown menu for image selection
 image_folder = 'images'
-image_files = [f for f in os.listdir(image_folder) if f.endswith('.npz')].sort()
-selected_image_file = st.sidebar.selectbox("Select an Image", image_files)
+image_files = [f for f in os.listdir(image_folder) if f.endswith('.npz')]
+selected_image_file = st.sidebar.selectbox("Select an Image", image_files.sort())
 
 predict_image = st.sidebar.button("Predict on this Xray")
 
