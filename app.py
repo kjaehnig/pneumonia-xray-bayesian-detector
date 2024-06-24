@@ -109,7 +109,7 @@ selected_image_file = st.sidebar.selectbox("Select an Image", image_files)
 
 select_img_size = st.sidebar.selectbox("Select image display size", ['small', 'medium', 'large'])
 
-use_modified_img = st.sidebar.checkbox("Use modified Image", value=False)
+use_modified_img = st.sidebar.checkbox("Use modified Image")
 
 alpha_val = st.sidebar.slider("Alpha (contrast)", min_value=0.0, max_value=3.0, value=1.0, step=0.1)
 beta_val = st.sidebar.slider("Beta (brightness)", min_value=0, max_value=100, value=0, step=1)
