@@ -8,7 +8,7 @@ from tqdm import tqdm
 from tensorflow.keras.models import load_model
 
 # Load the trained model
-model = load_model("path_to_your_model.h5", compile=False)
+model = load_model("trained_model", compile=False)
 
 # Function to make predictions
 def make_predictions(model, image, n_iter):
