@@ -134,7 +134,7 @@ if selected_image_file and predict_image:
 
     # Make predictions
     if use_modified_img:
-        pred_image = cv.convertScaleAbs(image, alpha=alpha_val, beta=beta_val)
+        pred_image = cv2.convertScaleAbs(image, alpha=alpha_val, beta=beta_val)
     else:
         pred_image = image
     predicted_probabilities = make_predictions(model, pred_image, n_iter)
