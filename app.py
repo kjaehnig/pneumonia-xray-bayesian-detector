@@ -75,7 +75,7 @@ if selected_image_file and predict_image:
     data = np.load(file_path)
     image = data['x']
     true_label = data['y']
-    img = tf.image.resize(image, [299, 299, 3])  # Adjust size if necessary
+    # img = tf.image.resize(image, [299, 299, 3])  # Adjust size if necessary
     img = image / 255.0  # Normalize the image
 
     # Make predictions
