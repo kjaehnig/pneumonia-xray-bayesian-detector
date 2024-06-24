@@ -93,7 +93,7 @@ if selected_image_file and predict_image:
 
     # Display results
     st.image(
-        img.reshape(299, 299, 3)/255.,
+        image.reshape(299, 299, 3)/255.,
         caption=f'Selected Image: {pred_label}',
         use_column_width=True,
         clamp=True,
