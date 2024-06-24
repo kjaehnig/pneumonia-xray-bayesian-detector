@@ -6,7 +6,7 @@ import os
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 from tensorflow.keras.models import load_model
-
+import cv2
 
 class MyBayesianModel:
     def __init__(self, model):
@@ -92,7 +92,19 @@ image_files = [f for f in os.listdir(image_folder) if f.endswith('.npz')]
 image_files.sort()
 selected_image_file = st.sidebar.selectbox("Select an Image", image_files)
 
-predict_image = st.sidebar.button("Predict on this Xray")
+predict_image = st.sidebar.button("Make prediction.")
+
+with st.sidebar:
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        if st.button('Small'):
+            img_size = (75, 75)
+    with col2:
+        if st.button('Medium'):
+            img_size = (150, 150)
+    with col3:
+        if st.button('Large'):
+            img_size = (299, 299)
 
 if selected_image_file and predict_image:
     # Load and preprocess the image
@@ -118,8 +130,8 @@ if selected_image_file and predict_image:
 
     # Display results
     st.image(
-        image.reshape(299, 299, 3)/255.,
-        caption=f'Selected Image: {pred_label}',
+        cv2.resize(image, img_size, interpolation=cv2.INTER_BILINEAR)/255.,
+        caption=f'Selected Image: {class_names[true_int]}',
         use_column_width=True,
         clamp=True,
         channels='BGR'
