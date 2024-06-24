@@ -198,6 +198,6 @@ if selected_image_file and predict_image:
 
     st.pyplot(fig)
 
-    st.write(f"Prediction Probabilities 50, (2.5, 97.5):")
-    st.write(f"      Normal - {pct_50[0]:.2f} ({pct_2p5[0]:.2f}, {pct_97p5[0]:.2f})")
-    st.write(f"      Pneumonia - {pct_50[1]:.2f} ({pct_2p5[1]:.2f}, {pct_97p5[1]:.2f})")
+    st.write(f"Prediction Probabilities: 50, (2.5, 97.5)")
+    st.write(f"      Normal: {pct_50[0]:.2f} ({pct_2p5[0]:.2f}, {pct_97p5[0]:.2f})")
+    st.write(f"      Pneumonia: {pct_50[1]:.2f} ({pct_2p5[1]:.2f}, {pct_97p5[1]:.2f})")
