@@ -75,7 +75,7 @@ if selected_image_file and predict_image:
     data = np.load(file_path)
     image = data['x']
     true_label = data['y']
-    img = tf.image.resize(image, [299, 299])  # Adjust size if necessary
+    img = tf.image.resize(image, [299, 299, 3])  # Adjust size if necessary
     img = image / 255.0  # Normalize the image
 
     # Make predictions
@@ -93,7 +93,7 @@ if selected_image_file and predict_image:
     pred_label = class_names[pred_int]
 
     # Display results
-    st.image(image.reshape(299, 299, 1), caption=f'Selected Image: {pred_label}', use_column_width=True)
+    st.image(image.reshape(299, 299, 3), caption=f'Selected Image: {pred_label}', use_column_width=True)
 
     # Plot probabilities
     fig, ax = plt.subplots()
