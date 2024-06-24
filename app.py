@@ -74,7 +74,7 @@ def make_predictions(model, image, n_iter):
     num_classes = 2  # Normal and Pneumonia
     predicted_probabilities = np.empty(shape=(n_iter, num_classes))
     for i, per in enumerate(np.linspace(0, 100, n_iter).astype('int')):
-        progressbar.progress(per)
+        progressbar.progress(per/n_iter)
         predicted_probabilities[i] = model(image[np.newaxis, :]).mean().numpy()[0]
     return predicted_probabilities
 
