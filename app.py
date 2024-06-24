@@ -34,7 +34,8 @@ if selected_image_file:
     # Load and preprocess the image
     file_path = os.path.join(image_folder, selected_image_file)
     data = np.load(file_path)
-    image = data['image']
+    image = data['x']
+    true_label = data['y']
     image = tf.image.resize(image, [299, 299])  # Adjust size if necessary
     image = image / 255.0  # Normalize the image
 
