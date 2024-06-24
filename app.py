@@ -98,11 +98,11 @@ predict_image = st.sidebar.button("Predict!")
 
 img_size = (299, 299)
 if select_img_size == 'small':
-    img_size = (75, 75)
-if select_img_size == 'medium':
-    img_size = (150, 150)
-if select_img_size == 'large':
     img_size = (299, 299)
+if select_img_size == 'medium':
+    img_size = (600, 600)
+if select_img_size == 'large':
+    img_size = (1200, 1200)
 
 if selected_image_file and predict_image:
     # Load and preprocess the image
@@ -140,7 +140,7 @@ if selected_image_file and predict_image:
     fig, ax = plt.subplots()
     bar = ax.bar(np.arange(2), pct_97p5, color='red')
     bar[true_int].set_color('green')
-    ax.bar(np.arange(2), pct_2p5 - 0.1, lw=3, color='white')
+    ax.bar(np.arange(2), pct_2p5, lw=3, color='white')
     ax.set_xticks(np.arange(2))
     ax.set_xticklabels(class_names)
     ax.set_ylim([0, 1])
