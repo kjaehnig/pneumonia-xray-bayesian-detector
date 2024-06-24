@@ -61,9 +61,9 @@ def load_model_as_class_into_streamlit():
 
         model.set_weights(weights_pk)
 
-        mdl_class = MyBayesianModel(model)
+        # mdl_class = MyBayesianModel(model)
 
-    return mdl_class
+    return model
 
 model = load_model_as_class_into_streamlit()
 
@@ -74,7 +74,7 @@ def make_predictions(model, image, n_iter):
     predicted_probabilities = np.empty(shape=(n_iter, num_classes))
     for i in tqdm(range(n_iter), leave=False):
         st.progress(np.round(i/n_iter, 2), text='predicting...')
-        predicted_probabilities[i] = model.predict(image)  # model(image[np.newaxis, :]).mean().numpy()[0]
+        predicted_probabilities[i] = model(image[np.newaxis, :]).mean().numpy()[0]
     return predicted_probabilities
 
 # Streamlit app
