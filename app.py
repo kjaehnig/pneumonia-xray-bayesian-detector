@@ -8,6 +8,24 @@ from tqdm import tqdm
 from tensorflow.keras.models import load_model
 
 
+class MyBayesianModel:
+    def __init__(self, model):
+        self.model = model
+
+    @tf.function
+    def predict(self, img):
+        """
+        Perform inference using the trained Bayesian model.
+
+        Args:
+            input_data (tf.Tensor): Input data for prediction.
+
+        Returns:
+            tf.Tensor: Model predictions.
+        """
+        return self.model(img[np.newaxis, :]).mean().numpy()[0]
+
+
 def neg_loglike(ytrue, ypred):
     return -ypred.log_prob(ytrue)
 
@@ -15,6 +33,7 @@ def neg_loglike(ytrue, ypred):
 def divergence(q, p, _):
     return tfd.kl_divergence(q, p) / 112799.
 # Load the trained model
+
 custom_objs = {
     'neg_loglike': lambda x,y: -y.log_prob(x),
     'divergence': lambda q,p: trd.divergence(q, p) / 5216.
@@ -22,7 +41,7 @@ custom_objs = {
 # model = load_model("trained_model", compile=True, custom_objects=custom_objs)
 
 @st.cache_resource
-def load_model_into_streamlit():
+def load_model_as_class_into_streamlit():
     tf.keras.backend.clear_session()
     with st.spinner("Loading TensorFlow model..."):
         from pneumonia_bcnn_detector import build_mdl
@@ -42,9 +61,11 @@ def load_model_into_streamlit():
 
         model.set_weights(weights_pk)
 
-    return model
+        mdl_class = MyBayesianModel(model)
 
-model = load_model_into_streamlit()
+    return mdl_class
+
+model = load_model_as_class_into_streamlit()
 
 
 # Function to make predictions
@@ -52,7 +73,7 @@ def make_predictions(model, image, n_iter):
     num_classes = 2  # Normal and Pneumonia
     predicted_probabilities = np.empty(shape=(n_iter, num_classes))
     for i in tqdm(range(n_iter), leave=False):
-        predicted_probabilities[i] = model(image[np.newaxis, :]).mean().numpy()[0]
+        predicted_probabilities[i] = model.predict(image)  # model(image[np.newaxis, :]).mean().numpy()[0]
     return predicted_probabilities
 
 # Streamlit app
@@ -64,7 +85,7 @@ n_iter = st.sidebar.slider("Number of Predictions", min_value=2, max_value=50, v
 
 # Dropdown menu for image selection
 image_folder = 'images'
-image_files = [f for f in os.listdir(image_folder) if f.endswith('.npz')]
+image_files = [f for f in os.listdir(image_folder) if f.endswith('.npz')].sort()
 selected_image_file = st.sidebar.selectbox("Select an Image", image_files)
 
 predict_image = st.sidebar.button("Predict on this Xray")
