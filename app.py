@@ -21,6 +21,29 @@ custom_objs = {
 }
 model = load_model("trained_model", compile=True, custom_objects=custom_objs)
 
+@st.cache_resource
+def load_model_into_streamlit():
+    with st.spinner("Loading TensorFlow model..."):
+        from pneumonia_bcnn_detector import build_mdl
+
+        def neg_loglike(ytrue, ypred):
+            return -ypred.log_prob(ytrue)
+
+        def divergence(q, p, _):
+            return tfd.kl_divergence(q, p) / 6214.
+
+        model = build_mdl
+
+        with open("ocr_bnn_weights.pk", 'rb') as whts:
+            weights_pk = pk.load(whts)
+
+        model.set_weights(weights_pk)
+
+    return model
+
+model = load_model_into_streamlit()
+
+
 # Function to make predictions
 def make_predictions(model, image, n_iter):
     num_classes = 2  # Normal and Pneumonia
