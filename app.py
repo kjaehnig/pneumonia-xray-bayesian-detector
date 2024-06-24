@@ -109,6 +109,11 @@ selected_image_file = st.sidebar.selectbox("Select an Image", image_files)
 
 select_img_size = st.sidebar.selectbox("Select image display size", ['small', 'medium', 'large'])
 
+use_modified_img = st.sidebar.checkbox("Use modified Image", value=False)
+
+alpha_val = st.sidebar.slider("Alpha (contrast)", min_value=0, max_value=3.0, value=1.0, step=0.1)
+beta_val = st.sidebar.slider("Beta (brightness)", min_value=0, max_value=100, value=0, step=1)
+
 predict_image = st.sidebar.button("Predict!")
 
 img_size = (299, 299)
@@ -128,7 +133,11 @@ if selected_image_file and predict_image:
     # img = tf.image.resize(image, [299, 299, 3])  # Adjust size if necessary
 
     # Make predictions
-    predicted_probabilities = make_predictions(model, image, n_iter)
+    if use_modified_img:
+        pred_image = cv.convertScaleAbs(image, alpha=alpha_val, beta=beta_val)
+    else:
+        pred_image = image
+    predicted_probabilities = make_predictions(model, pred_image, n_iter)
 
     # Calculate percentiles
     pct_2p5 = np.percentile(predicted_probabilities, 2.5, axis=0)
@@ -142,14 +151,32 @@ if selected_image_file and predict_image:
     pred_label = class_names[pred_int]
 
     # Display results
-    st.image(
-        image/255.,
-        caption=f'Selected Image: {class_names[true_int]}',
-        # use_column_width=True,
-        width=img_size[0],
-        clamp=True,
-        channels='BGR'
-    )
+    if use_modified_img:
+        with st.columns(2) as col:
+            col[0].image(
+                image/255.,
+                caption=f'Selected Image: {class_names[true_int]} (original)',
+                use_column_width=True,
+                # width=img_size[0],
+                clamp=True,
+                channels='BGR'
+            )
+            col[1].image(
+                pred_image/255.,
+                caption=f'Selected Image: {class_names[true_int]} (modified)',
+                use_column_width=True,
+                clamp=True,
+                channels='BGR'
+            )
+    else:
+        st.image(
+            image/255.,
+            caption=f'Selected Image: {class_names[true_int]}',
+            # use_column_width=True,
+            width=img_size[0],
+            clamp=True,
+            channels='BGR'
+        )
 
     # Plot probabilities
     fig, ax = plt.subplots()
