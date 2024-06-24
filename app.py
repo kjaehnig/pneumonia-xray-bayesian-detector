@@ -92,19 +92,17 @@ image_files = [f for f in os.listdir(image_folder) if f.endswith('.npz')]
 image_files.sort()
 selected_image_file = st.sidebar.selectbox("Select an Image", image_files)
 
-predict_image = st.sidebar.button("Make prediction.")
+predict_image = st.sidebar.button("Predict!")
 
-with st.sidebar:
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        if st.button('Small'):
-            img_size = (75, 75)
-    with col2:
-        if st.button('Medium'):
-            img_size = (150, 150)
-    with col3:
-        if st.button('Large'):
-            img_size = (299, 299)
+select_img_size = st.sidebar.selectbox("Select image display size", ['small', 'medium', 'large'])
+
+img_size = (299, 299)
+if select_img_size == 'small':
+    img_size = (75, 75)
+if select_img_size == 'medium':
+    img_size = (150, 150)
+if select_img_size == 'large':
+    img_size = (299, 299)
 
 if selected_image_file and predict_image:
     # Load and preprocess the image
