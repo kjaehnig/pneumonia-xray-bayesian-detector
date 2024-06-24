@@ -57,24 +57,26 @@ st.title("Pneumonia Detection Probability")
 st.sidebar.title("Settings")
 
 # Sidebar slider for number of predictions
-n_iter = st.sidebar.slider("Number of Predictions", min_value=10, max_value=100, value=50)
+n_iter = st.sidebar.slider("Number of Predictions", min_value=2, max_value=50, value=10)
 
 # Dropdown menu for image selection
 image_folder = 'images'
 image_files = [f for f in os.listdir(image_folder) if f.endswith('.npz')]
 selected_image_file = st.sidebar.selectbox("Select an Image", image_files)
 
-if selected_image_file:
+predict_image = st.sidebar.button("Predict on this Xray")
+
+if selected_image_file and predict_image:
     # Load and preprocess the image
     file_path = os.path.join(image_folder, selected_image_file)
     data = np.load(file_path)
     image = data['x']
     true_label = data['y']
-    image = tf.image.resize(image, [299, 299])  # Adjust size if necessary
-    image = image / 255.0  # Normalize the image
+    img = tf.image.resize(image, [299, 299])  # Adjust size if necessary
+    img = image / 255.0  # Normalize the image
 
     # Make predictions
-    predicted_probabilities = make_predictions(model, image, n_iter)
+    predicted_probabilities = make_predictions(model, img, n_iter)
 
     # Calculate percentiles
     pct_2p5 = np.percentile(predicted_probabilities, 2.5, axis=0)
