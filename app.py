@@ -23,6 +23,7 @@ model = load_model("trained_model", compile=True, custom_objects=custom_objs)
 
 @st.cache_resource
 def load_model_into_streamlit():
+    tf.keras.backend.clear_session()
     with st.spinner("Loading TensorFlow model..."):
         from pneumonia_bcnn_detector import build_mdl
 
