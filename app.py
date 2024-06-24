@@ -19,7 +19,7 @@ custom_objs = {
     'neg_loglike': lambda x,y: -y.log_prob(x),
     'divergence': lambda q,p: trd.divergence(q, p) / 5216.
 }
-model = load_model("trained_model", compile=False, custom_objects=custom_objs)
+model = load_model("trained_model", compile=True, custom_objects=custom_objs)
 
 # Function to make predictions
 def make_predictions(model, image, n_iter):
