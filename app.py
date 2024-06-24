@@ -73,8 +73,8 @@ def make_predictions(model, image, n_iter):
     num_classes = 2  # Normal and Pneumonia
     predicted_probabilities = np.empty(shape=(n_iter, num_classes))
     for i in tqdm(range(n_iter), leave=False):
-        st.progress(np.round(i/n_iter, 2), text='predicting...')
-        predicted_probabilities[i] = model(image[np.newaxis, :]).mean().numpy()[0]
+        with st.spinner("Loading TensorFlow model..."):
+            predicted_probabilities[i] = model(image[np.newaxis, :]).mean().numpy()[0]
     return predicted_probabilities
 
 # Streamlit app
