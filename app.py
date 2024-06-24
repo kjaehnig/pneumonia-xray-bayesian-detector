@@ -89,7 +89,7 @@ if selected_image_file and predict_image:
     # Determine labels
     class_names = ['Normal', 'Pneumonia']
     pred_int = np.argmax(pct_50)
-    true_int = pred_int  # This should be replaced with the actual label if known
+    true_int = true_label  # This should be replaced with the actual label if known
     pred_label = class_names[pred_int]
 
     # Display results
