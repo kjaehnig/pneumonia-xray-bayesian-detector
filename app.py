@@ -74,7 +74,7 @@ if selected_image_file and predict_image:
     file_path = os.path.join(image_folder, selected_image_file)
     data = np.load(file_path)
     image = data['x']
-    true_label = data['y']
+    true_label = np.argmax(data['y']).astype('int')
     # img = tf.image.resize(image, [299, 299, 3])  # Adjust size if necessary
     img = image / 255.0  # Normalize the image
 
