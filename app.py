@@ -114,6 +114,9 @@ use_modified_img = st.sidebar.checkbox("Use modified Image")
 alpha_val = st.sidebar.slider("Alpha (contrast)", min_value=0.0, max_value=3.0, value=1.0, step=0.1)
 beta_val = st.sidebar.slider("Beta (brightness)", min_value=0, max_value=100, value=0, step=1)
 
+flip_image_h = st.sidebar.selectbox("Flip Image (horizontal)")
+flip_image_v = st.sidebar.selectbox("Flip Image (vertical)")
+
 predict_image = st.sidebar.button("Predict!")
 
 img_size = (299, 299)
@@ -135,6 +138,10 @@ if selected_image_file and predict_image:
     # Make predictions
     if use_modified_img:
         pred_image = cv2.convertScaleAbs(image, alpha=alpha_val, beta=beta_val)
+        if flip_image_h:
+            pred_image = cv2.flip(pred_image, 1)
+        if flip_image_v:
+            pred_image = cv2.flip(pred_image, 0)
     else:
         pred_image = image
     predicted_probabilities = make_predictions(model, pred_image, n_iter)
