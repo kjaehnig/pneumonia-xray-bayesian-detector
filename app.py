@@ -128,7 +128,7 @@ if selected_image_file and predict_image:
 
     # Display results
     st.image(
-        cv2.resize(image, img_size, interpolation=cv2.INTER_BILINEAR)/255.,
+        cv2.resize(image, img_size, interpolation=cv2.INTER_LINEAR)/255.,
         caption=f'Selected Image: {class_names[true_int]}',
         use_column_width=True,
         clamp=True,
