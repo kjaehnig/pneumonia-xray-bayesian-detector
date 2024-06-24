@@ -104,7 +104,7 @@ if selected_image_file and predict_image:
     fig, ax = plt.subplots()
     bar = ax.bar(np.arange(2), pct_97p5, color='red')
     bar[true_int].set_color('green')
-    ax.bar(np.arange(2), pct_2p5 - 0.03, lw=3, color='white')
+    ax.bar(np.arange(2), pct_2p5 - 0.1, lw=3, color='white')
     ax.set_xticks(np.arange(2))
     ax.set_xticklabels(class_names)
     ax.set_ylim([0, 1])
