@@ -132,6 +132,7 @@ if selected_image_file and predict_image:
     file_path = os.path.join(image_folder, selected_image_file)
     data = np.load(file_path)
     image = data['x']
+    pred_image = image
     true_label = np.argmax(data['y']).astype('int')
     # img = tf.image.resize(image, [299, 299, 3])  # Adjust size if necessary
 
@@ -146,8 +147,7 @@ if selected_image_file and predict_image:
             pred_image = cv2.flip(pred_image, 1)
         if flip_image_v:
             pred_image = cv2.flip(pred_image, 0)
-    else:
-        pred_image = image
+
     predicted_probabilities = make_predictions(model, pred_image, n_iter)
 
     # Calculate percentiles
