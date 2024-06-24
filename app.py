@@ -80,7 +80,22 @@ def make_predictions(model, image, n_iter):
     return predicted_probabilities
 
 # Streamlit app
-st.title("Bayesian Pneumonia Detection from Xrays")
+st.title("Bayesian Pneumonia Detection")
+with st.expander("Description"):
+    st.write("""
+    This website hosts a neural network model that's trained to diagnose pneumonia from chest X-ray images. 
+    Pneumonia is a significant health issue and causes many deaths amongst children under the age of 5. 
+    This AI model uses a dataset of over 5,200 X-ray images of both normal and pneumonia cases.
+    This model uses the EfficientNetV2S model that is pre-trained on 'ImageNet' to extract image features. It then uses 
+    Bayesian neural network layers for classification. Bayesian models are advantageous as they quantify uncertainty 
+    in predictions, which is crucial for medical diagnostics. Data augmentation techniques enhance the model's 
+    robustness by randomly flipping an image, modifying the image contrast, and shifting the image around.
+    The final model achieved an accuracy of 95.3%, which out performs the baseline model from the paper this dataset was
+    sourced from. It effectively minimizes false negatives, ensuring pneumonia cases are not missed. 
+    The Bayesian layers also provide confidence intervals for predictions, improving diagnostic reliability.
+    This AI model demonstrates significant potential in assisting medical diagnostics by offering quick and 
+    reliable pneumonia detection from chest X-rays, improving treatment outcomes and resource allocation in healthcare.
+    """)
 st.sidebar.title("Settings")
 
 # Sidebar slider for number of predictions
@@ -156,4 +171,6 @@ if selected_image_file and predict_image:
 
     st.pyplot(fig)
 
-    st.write(f"Prediction Probabilities: Normal - {pct_50[0]:.2f} ({pct_2p5[0]:.2f}, {pct_97p5[0]:.2f}), Pneumonia - {pct_50[1]:.2f} ({pct_2p5[1]:.2f}, {pct_97p5[1]:.2f})")
+    st.write(f"Prediction Probabilities 50, (2.5, 97.5):")
+    st.write(f"      Normal - {pct_50[0]:.2f} ({pct_2p5[0]:.2f}, {pct_97p5[0]:.2f})")
+    st.write(f"      Pneumonia - {pct_50[1]:.2f} ({pct_2p5[1]:.2f}, {pct_97p5[1]:.2f})")
