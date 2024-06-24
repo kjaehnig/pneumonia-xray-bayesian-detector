@@ -137,7 +137,11 @@ if selected_image_file and predict_image:
 
     # Make predictions
     if use_modified_img:
-        pred_image = cv2.convertScaleAbs(image, alpha=alpha_val, beta=beta_val)
+        pred_image = np.zeros(image.shape, image.dtype)
+        for y in range(image.shape[0]):
+            for x in range(image.shape[1]):
+                for c in range(image.shape[2]):
+                    pred_image[y, x, c] = np.clip(alpha * image[y, x, c] + beta, 0, 255)
         if flip_image_h:
             pred_image = cv2.flip(pred_image, 1)
         if flip_image_v:
