@@ -88,7 +88,7 @@ if selected_image_file:
     pred_label = class_names[pred_int]
 
     # Display results
-    st.image(image, caption=f'Selected Image: {pred_label}', use_column_width=True)
+    st.image(image.reshape(299, 299, 1), caption=f'Selected Image: {pred_label}', use_column_width=True)
 
     # Plot probabilities
     fig, ax = plt.subplots()
