@@ -92,9 +92,9 @@ image_files = [f for f in os.listdir(image_folder) if f.endswith('.npz')]
 image_files.sort()
 selected_image_file = st.sidebar.selectbox("Select an Image", image_files)
 
-predict_image = st.sidebar.button("Predict!")
-
 select_img_size = st.sidebar.selectbox("Select image display size", ['small', 'medium', 'large'])
+
+predict_image = st.sidebar.button("Predict!")
 
 img_size = (299, 299)
 if select_img_size == 'small':
@@ -128,9 +128,10 @@ if selected_image_file and predict_image:
 
     # Display results
     st.image(
-        cv2.resize(image, img_size, interpolation=cv2.INTER_LINEAR)/255.,
+        image/255.,
         caption=f'Selected Image: {class_names[true_int]}',
-        use_column_width=True,
+        # use_column_width=True,
+        width=img_size[0],
         clamp=True,
         channels='BGR'
     )
