@@ -67,14 +67,15 @@ def load_model_as_class_into_streamlit():
 
 model = load_model_as_class_into_streamlit()
 
-
 # Function to make predictions
 def make_predictions(model, image, n_iter):
+    progressbar = st.progress(0)
+
     num_classes = 2  # Normal and Pneumonia
     predicted_probabilities = np.empty(shape=(n_iter, num_classes))
-    for i in tqdm(range(n_iter), leave=False):
-        with st.spinner("Loading TensorFlow model..."):
-            predicted_probabilities[i] = model(image[np.newaxis, :]).mean().numpy()[0]
+    for i in np.linspace(0, 100, n_iter):
+        progressbar.progress(i)
+        predicted_probabilities[i] = model(image[np.newaxis, :]).mean().numpy()[0]
     return predicted_probabilities
 
 # Streamlit app
