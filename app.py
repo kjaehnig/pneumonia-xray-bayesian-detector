@@ -107,8 +107,8 @@ image_files = [f for f in os.listdir(image_folder) if f.endswith('.npz')]
 image_files.sort()
 
 true_labels = []
-for img in image_files:
-    data = np.load(os.path.join(image_folder, img))
+for imgii in image_files:
+    data = np.load(os.path.join(image_folder, imgii))
     true_labels.append('Pneumonia' if np.argmax(data['y']).astype(int)==1 else 'Normal')
 
 image_names = [tl+"_img_"+imf.split('_')[-1].split('.')[0] for tl, imf in list(zip(true_labels, image_files))]
