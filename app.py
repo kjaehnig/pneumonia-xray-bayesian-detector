@@ -128,14 +128,24 @@ if select_img_size == 'large':
     img_size = (1200, 1200)
 
 if selected_image_file and predict_image:
+    class_names = ['Normal', 'Pneumonia']
+
     # Load and preprocess the image
     file_path = os.path.join(image_folder, selected_image_file)
     data = np.load(file_path)
     image = data['x']
     pred_image = image
-    true_label = np.argmax(data['y']).astype('int')
+    true_int = np.argmax(data['y']).astype('int')
     # img = tf.image.resize(image, [299, 299, 3])  # Adjust size if necessary
-
+    img_cols = st.columns(2)
+    img_cols[0].image(
+        image / 255.,
+        caption=f'Selected Image: {class_names[true_int]} (original)',
+        use_column_width=True,
+        # width=img_size[0],
+        clamp=True,
+        channels='BGR'
+    )
     # Make predictions
     if use_modified_img:
         pred_image = np.zeros(image.shape, image.dtype)
@@ -148,6 +158,13 @@ if selected_image_file and predict_image:
         if flip_image_v:
             pred_image = cv2.flip(pred_image, 0)
 
+        img_cols[1].image(
+            pred_image/255.,
+            caption=f'Selected Image: {class_names[true_int]} (modified)',
+            use_column_width=True,
+            clamp=True,
+            channels='BGR'
+        )
     predicted_probabilities = make_predictions(model, pred_image, n_iter)
 
     # Calculate percentiles
@@ -156,38 +173,8 @@ if selected_image_file and predict_image:
     pct_50 = np.percentile(predicted_probabilities, 50, axis=0)
 
     # Determine labels
-    class_names = ['Normal', 'Pneumonia']
     pred_int = np.argmax(pct_50)
-    true_int = true_label  # This should be replaced with the actual label if known
     pred_label = class_names[pred_int]
-
-    # Display results
-    if use_modified_img:
-        img_cols = st.columns(2)
-        img_cols[0].image(
-            image/255.,
-            caption=f'Selected Image: {class_names[true_int]} (original)',
-            use_column_width=True,
-            # width=img_size[0],
-            clamp=True,
-            channels='BGR'
-        )
-        img_cols[1].image(
-            pred_image/255.,
-            caption=f'Selected Image: {class_names[true_int]} (modified)',
-            use_column_width=True,
-            clamp=True,
-            channels='BGR'
-        )
-    else:
-        st.image(
-            image/255.,
-            caption=f'Selected Image: {class_names[true_int]}',
-            # use_column_width=True,
-            width=img_size[0],
-            clamp=True,
-            channels='BGR'
-        )
 
     # Plot probabilities
     fig, ax = plt.subplots()
