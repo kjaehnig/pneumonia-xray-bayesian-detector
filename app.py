@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 from tensorflow.keras.models import load_model
 import cv2
+import seaborn as sns
 
 class MyBayesianModel:
     def __init__(self, model):
@@ -188,9 +189,18 @@ if selected_image_file and predict_image:
 
     # Plot probabilities
     fig, ax = plt.subplots()
-    bar = ax.bar(np.arange(2), pct_97p5, color='red')
-    bar[true_int].set_color('green')
-    ax.bar(np.arange(2), pct_2p5, lw=3, color='white', width=0.9)
+    # bar = ax.bar(np.arange(2), pct_97p5, color='red')
+    # bar[true_int].set_color('green')
+    # ax.bar(np.arange(2), pct_2p5, lw=3, color='white', width=0.9)
+    violin_colors = [
+        'red' if true_int == 1 else 'green',
+        'red' if true_int == 0 else 'green'
+    ]
+
+    sns.violinplot(
+        predicted_probabilities,
+        palette=violin_colors
+    )
     ax.set_xticks(np.arange(2))
     ax.set_xticklabels(class_names)
     ax.set_ylim([0, 1])
