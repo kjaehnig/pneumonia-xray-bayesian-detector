@@ -109,7 +109,7 @@ image_files.sort()
 true_labels = []
 for imgii in image_files:
     imgpath = os.path.join(image_folder, imgii)
-    print(imgpath)
+    # print(imgpath)
     data = np.load(imgpath)
     true_labels.append('Pneumonia' if np.argmax(data['y']).astype(int)==1 else 'Normal')
 
@@ -141,7 +141,7 @@ if selected_image_file and predict_image:
 
     # Load and preprocess the image
     selected_img_path = f"chest_xray_testimg_{selected_image_file.split('_')[-1]}.npz"
-    file_path = os.path.join(image_folder, selected_image_file)
+    file_path = os.path.join(image_folder, selected_img_path)
     data = np.load(file_path)
     image = data['x']
     pred_image = image
