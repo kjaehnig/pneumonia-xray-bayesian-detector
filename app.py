@@ -105,7 +105,14 @@ n_iter = st.sidebar.slider("Number of Predictions", min_value=2, max_value=50, v
 image_folder = 'images'
 image_files = [f for f in os.listdir(image_folder) if f.endswith('.npz')]
 image_files.sort()
-selected_image_file = st.sidebar.selectbox("Select an Image", image_files)
+
+true_labels = []
+for img in image_files:
+    data = np.load(os.path.join(image_folder, img))
+    true_labels.append('Pneumonia' if np.argmax(data['y']).astype(int)==1 else 'Normal')
+
+image_names = [tl+"_img_"+imf.split('_')[-1].split('.')[0] for tl, imf in list(zip(true_labels, image_files))]
+selected_image_file = st.sidebar.selectbox("Select an Image", image_names)
 
 select_img_size = st.sidebar.selectbox("Select image display size", ['small', 'medium', 'large'])
 
@@ -131,6 +138,7 @@ if selected_image_file and predict_image:
     class_names = ['Normal', 'Pneumonia']
 
     # Load and preprocess the image
+    selected_img_path = f"chest_xray_testimg_{selected_image_file.split('_')[-1]}.npz"
     file_path = os.path.join(image_folder, selected_image_file)
     data = np.load(file_path)
     image = data['x']
