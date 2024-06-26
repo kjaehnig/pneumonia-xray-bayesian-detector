@@ -27,33 +27,13 @@ class MyBayesianModel:
         return self.model(img[np.newaxis, :]).mean().numpy()[0]
 
 
-def neg_loglike(ytrue, ypred):
-    return -ypred.log_prob(ytrue)
-
-
-def divergence(q, p, _):
-    return tfd.kl_divergence(q, p) / 112799.
 # Load the trained model
-
-custom_objs = {
-    'neg_loglike': lambda x,y: -y.log_prob(x),
-    'divergence': lambda q,p: trd.divergence(q, p) / 5216.
-}
-# model = load_model("trained_model", compile=True, custom_objects=custom_objs)
-
 @st.cache_resource
 def load_model_as_class_into_streamlit():
     tf.keras.backend.clear_session()
     with st.spinner("Loading TensorFlow model..."):
         from pneumonia_bcnn_detector import build_mdl
 
-        @tf.function
-        def neg_loglike(ytrue, ypred):
-            return -ypred.log_prob(ytrue)
-
-        @tf.function
-        def divergence(q, p, _):
-            return tfd.kl_divergence(q, p) / 6214.
 
         model = build_mdl()
 
