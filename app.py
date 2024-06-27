@@ -141,11 +141,12 @@ selected_image_file = st.selectbox('Image Selector', image_names)
 
 
 st.markdown("""**Step 2 - :orange[Modify image (optional)]**""")
-modifier_cols = st.columns(4)
+modifier_cols = st.columns(5)
 modifier_cols[0].write("Flip Image")
 flip_image_h = modifier_cols[1].checkbox("Horizontal")
 flip_image_v = modifier_cols[2].checkbox("Vertical")
-use_modified_img = modifier_cols[3].checkbox("Use modified")
+shot_switch = modifier_cols[3].checkbox("Seasoning")
+use_modified_img = modifier_cols[4].checkbox("Use modified")
 
 st.markdown("""**Step 3 - :green[Perform image classification]**""")
 predict_image = st.button("Predict!")
