@@ -78,11 +78,11 @@ with st.expander("Description"):
     reliable pneumonia detection from chest X-rays, improving treatment outcomes and resource allocation in healthcare.
     """)
 
-non_medical_warning = r'$\textcolor{red}{\
-        \textsf{\
-            \small This app is intended to be solely demonstrative and SHOULD \
-            NOT be used for any medical or diagnostic purposes.'
-st.write(non_medical_warning)
+non_medical_warning = """
+    :red [This app is entirely demonstrative and **SHOULD NOT** be used for any medical or diagnostic
+    purposes.]
+    """
+st.markdown(non_medical_warning)
 
 st.sidebar.title("Settings")
 
