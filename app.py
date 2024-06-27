@@ -79,7 +79,7 @@ with st.expander("Description"):
     """)
 
 non_medical_warning = """
-    :red [This app is entirely demonstrative and **SHOULD NOT** be used for any medical or diagnostic
+    :red[This app is entirely demonstrative and **SHOULD NOT** be used for any medical or diagnostic
     purposes.]
     """
 st.markdown(non_medical_warning)
