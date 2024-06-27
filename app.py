@@ -77,6 +77,16 @@ with st.expander("Description"):
     This AI model demonstrates significant potential in assisting medical diagnostics by offering quick and 
     reliable pneumonia detection from chest X-rays, improving treatment outcomes and resource allocation in healthcare.
     """)
+
+non_medical_warning = 
+    r'''
+    $\textcolor{red}{
+        \textsf{
+            \small This app is intended to be solely demonstrative and SHOULD 
+            NOT be used for any medical or diagnostic purposes.
+    '''
+st.write(non_medical_warning)
+
 st.sidebar.title("Settings")
 
 # Sidebar slider for number of predictions
