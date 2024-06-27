@@ -100,7 +100,7 @@ non_medical_warning = """
     :red[This app is entirely demonstrative and **SHOULD NOT** be used for any medical or diagnostic
     purposes.]
     """
-with st.expander("Warning"):
+with st.expander("A Warning on usage."):
     st.markdown(non_medical_warning)
 
 
@@ -132,9 +132,9 @@ n_iter = st.sidebar.slider("Number of Predictions", min_value=2, max_value=50, v
 alpha_val = st.sidebar.slider("Alpha (contrast)", min_value=0.0, max_value=3.0, value=1.0, step=0.1)
 beta_val = st.sidebar.slider("Beta (brightness)", min_value=0, max_value=100, value=0, step=1)
 
-
-
-
+shot_cols = st.sidebar.columns(2)
+shot_noise = shot_cols[0].slider("Shot Noise (dead pixel) Threshold", min_value=0, max_value=255, step=1)
+shot_switch = shot_cols[1].checkbox(" ")
 
 if selected_image_file:
     class_names = ['Normal', 'Pneumonia']
@@ -167,6 +167,13 @@ if selected_image_file:
             pred_image = cv2.flip(pred_image, 1)
         if flip_image_v:
             pred_image = cv2.flip(pred_image, 0)
+        if shot_switch:
+            imp_noise=np.zeros((image.shape[0], image.shape[1]))
+            cv2.randu(imp_noise,0,255)
+            imp_noise=cv2.threshold(imp_noise,shot_noise,255,cv2.THRESH_BINARY)[1]
+            in_img=cv2.add(pred_image,imp_noise)
+
+
 
         img_cols[1].image(
             pred_image/255.,
