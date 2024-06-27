@@ -78,8 +78,7 @@ with st.expander("Description"):
     reliable pneumonia detection from chest X-rays, improving treatment outcomes and resource allocation in healthcare.
     """)
 
-non_medical_warning = 
-    r'''
+non_medical_warning = r'''
     $\textcolor{red}{
         \textsf{
             \small This app is intended to be solely demonstrative and SHOULD 
