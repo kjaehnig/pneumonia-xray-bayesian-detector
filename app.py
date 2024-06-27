@@ -129,14 +129,15 @@ if selected_image_file:
     true_int = np.argmax(data['y']).astype('int')
     # img = tf.image.resize(image, [299, 299, 3])  # Adjust size if necessary
     img_cols = st.columns(2)
+
     img_cols[0].image(
         image / 255.,
-        caption=f'Selected Image: {class_names[true_int]} (original)',
+        # caption=f'Selected Image: {class_names[true_int]} (original)',
         use_column_width=True,
         clamp=True,
         channels='BGR'
     )
-    # Make predictions
+    img_cols[0].markdown(f"""{class_names[true_int]} (Original)""")
     if use_modified_img:
         pred_image = np.zeros(image.shape, image.dtype)
         for y in range(image.shape[0]):
@@ -150,11 +151,12 @@ if selected_image_file:
 
         img_cols[1].image(
             pred_image/255.,
-            caption=f'Selected Image: {class_names[true_int]} (modified)',
+            # caption=f'Selected Image: {class_names[true_int]} (modified)',
             use_column_width=True,
             clamp=True,
             channels='BGR'
         )
+        img_cols[1].markdown(f"""{class_names[true_int]} :red[(Modified)]""")
 
     if predict_image:
         predicted_probabilities = make_predictions(model, pred_image, n_iter)
