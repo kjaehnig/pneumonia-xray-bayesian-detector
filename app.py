@@ -9,10 +9,10 @@ from tensorflow.keras.models import load_model
 import cv2
 import seaborn as sns
 
+image_folder = 'images'
 
 def load_image_file_names():
     # Dropdown menu for image selection
-    image_folder = 'images'
     image_files = [f for f in os.listdir(image_folder) if f.endswith('.npz')]
     image_files.sort()
 
@@ -111,11 +111,11 @@ selected_image_file = interface_cols[0].selectbox("Select an Image", image_names
 
 predict_image = interface_cols[1].button("Predict!")
 
-modifier_cols = st.columns(3)
-modifier_cols[0].markdown("""***Modifiers***""")
-modifier_cols[0].write("Flip Image: ")
+modifier_cols = st.columns(4)
+modifier_cols[0].markdown("""**Modifiers**  Flip Image""")
 flip_image_h = modifier_cols[1].checkbox("Horizontal")
 flip_image_v = modifier_cols[2].checkbox("Vertical")
+use_modified_img = modifier_cols[3].checkbox("Use modified image")
 
 
 
@@ -125,7 +125,6 @@ st.sidebar.title(" Additional settings")
 n_iter = st.sidebar.slider("Number of Predictions", min_value=2, max_value=50, value=10)
 
 
-use_modified_img = st.sidebar.checkbox("Use modified Image")
 
 alpha_val = st.sidebar.slider("Alpha (contrast)", min_value=0.0, max_value=3.0, value=1.0, step=0.1)
 beta_val = st.sidebar.slider("Beta (brightness)", min_value=0, max_value=100, value=0, step=1)
