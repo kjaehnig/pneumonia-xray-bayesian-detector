@@ -106,8 +106,8 @@ st.markdown(non_medical_warning)
 # st.markdown("""**Select image and hit Predict!**""")
 
 image_names = load_image_file_names()
-st.markdown("""**Step 1 - Select an image""")
-selected_image_file = interface_cols[0].selectbox(image_names)
+st.markdown("""**Step 1 - Select an image**""")
+selected_image_file = st.selectbox(image_names)
 
 
 st.markdown("""**Step 2 - Modify image (optional)**""")
@@ -117,7 +117,7 @@ flip_image_h = modifier_cols[1].checkbox("Horizontal")
 flip_image_v = modifier_cols[2].checkbox("Vertical")
 use_modified_img = modifier_cols[3].checkbox("Use modified")
 
-st.markdown("""***Step 3 - Click predict button!""")
+st.markdown("""**Step 3 - Click predict button!**""")
 predict_image = st.button("Predict!")
 
 
