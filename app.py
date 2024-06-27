@@ -27,35 +27,6 @@ def load_image_file_names():
     return image_names
  
 
-def add_shot_noise(image, amount):
-    """
-    Add shot noise to a 3-channel image using OpenCV's add function.
-
-    Parameters:
-        image (numpy.ndarray): Input 3-channel image.
-        amount (float): Amount of noise to add (a higher value means more noise).
-
-    Returns:
-        numpy.ndarray: Noisy image.
-    """
-    # Ensure the amount is a positive value
-    amount = abs(amount)
-    
-    # Create a noise matrix
-    noise = np.random.poisson(image / 255.0 * amount) / amount * 255
-
-    # Convert noise to the same type as the image
-    noise = noise.astype(image.dtype)
-
-    # Add noise to the image using cv2.add
-    noisy_image = cv2.add(image, noise)
-
-    # Clip the values to be in the valid range [0, 255]
-    noisy_image = np.clip(noisy_image, 0, 255)
-
-    return noisy_image
-
-
 class MyBayesianModel:
     def __init__(self, model):
         self.model = model
@@ -198,7 +169,11 @@ if selected_image_file:
         if flip_image_v:
             pred_image = cv2.flip(pred_image, 0)
         if shot_switch:
-            pred_image = add_shot_noise(image, shot_noise)
+            imp_noise=np.zeros((299, 299, 3),dtype=image.dtype)
+            cv2.randu(imp_noise,0, 255)
+            imp_noise=cv2.threshold(imp_noise,shot_noise,255,cv2.THRESH_BINARY)[1]
+            pred_image = cv2.add(pred_image, imp_noise)
+            # pred_image = add_shot_noise(image, shot_noise)
 
 
 
