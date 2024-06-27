@@ -107,7 +107,7 @@ st.markdown(non_medical_warning)
 
 image_names = load_image_file_names()
 st.markdown("""**Step 1 - Select an image**""")
-selected_image_file = st.selectbox(image_names)
+selected_image_file = st.selectbox('Image Select', image_names)
 
 
 st.markdown("""**Step 2 - Modify image (optional)**""")
