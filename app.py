@@ -97,8 +97,8 @@ with st.expander("Description"):
     """)
 
 non_medical_warning = """
-    :orange-background[:black[This app is entirely demonstrative and **SHOULD NOT** be used for any medical or diagnostic
-    purposes.]]
+    :orange-background[This app is entirely demonstrative and **SHOULD NOT** be used for any medical or diagnostic
+    purposes.]
     """
 st.markdown(non_medical_warning)
 
