@@ -27,6 +27,35 @@ def load_image_file_names():
     return image_names
  
 
+def add_shot_noise(image, amount):
+    """
+    Add shot noise to a 3-channel image using OpenCV's add function.
+
+    Parameters:
+        image (numpy.ndarray): Input 3-channel image.
+        amount (float): Amount of noise to add (a higher value means more noise).
+
+    Returns:
+        numpy.ndarray: Noisy image.
+    """
+    # Ensure the amount is a positive value
+    amount = abs(amount)
+    
+    # Create a noise matrix
+    noise = np.random.poisson(image / 255.0 * amount) / amount * 255
+
+    # Convert noise to the same type as the image
+    noise = noise.astype(image.dtype)
+
+    # Add noise to the image using cv2.add
+    noisy_image = cv2.add(image, noise)
+
+    # Clip the values to be in the valid range [0, 255]
+    noisy_image = np.clip(noisy_image, 0, 255)
+
+    return noisy_image
+
+
 class MyBayesianModel:
     def __init__(self, model):
         self.model = model
@@ -132,9 +161,9 @@ n_iter = st.sidebar.slider("Number of Predictions", min_value=2, max_value=50, v
 alpha_val = st.sidebar.slider("Alpha (contrast)", min_value=0.0, max_value=3.0, value=1.0, step=0.1)
 beta_val = st.sidebar.slider("Beta (brightness)", min_value=0, max_value=100, value=0, step=1)
 
-shot_cols = st.sidebar.columns(2)
-shot_noise = shot_cols[0].slider("Shot Noise (dead pixel) Threshold", min_value=0, max_value=255, step=1)
-shot_switch = shot_cols[1].checkbox(" ")
+# shot_cols = st.sidebar.columns(2)
+shot_noise = st.siderbar.slider("Shot Noise (dead pixel) Threshold", min_value=0, max_value=100, step=1)
+# shot_switch = shot_cols[1].checkbox(" ")
 
 if selected_image_file:
     class_names = ['Normal', 'Pneumonia']
@@ -168,10 +197,7 @@ if selected_image_file:
         if flip_image_v:
             pred_image = cv2.flip(pred_image, 0)
         if shot_switch:
-            imp_noise=np.zeros((image.shape[0], image.shape[1], 3))
-            cv2.randu(imp_noise,0,255)
-            imp_noise=cv2.threshold(imp_noise,shot_noise,255,cv2.THRESH_BINARY)[1]
-            in_img=cv2.add(pred_image,imp_noise)
+            pred_image = add_shot_noise(image, shot_noise)
 
 
 
