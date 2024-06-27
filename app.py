@@ -168,7 +168,7 @@ if selected_image_file:
         if flip_image_v:
             pred_image = cv2.flip(pred_image, 0)
         if shot_switch:
-            imp_noise=np.zeros((image.shape[0], image.shape[1]))
+            imp_noise=np.zeros((image.shape[0], image.shape[1], 3))
             cv2.randu(imp_noise,0,255)
             imp_noise=cv2.threshold(imp_noise,shot_noise,255,cv2.THRESH_BINARY)[1]
             in_img=cv2.add(pred_image,imp_noise)
