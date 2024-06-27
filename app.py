@@ -9,6 +9,24 @@ from tensorflow.keras.models import load_model
 import cv2
 import seaborn as sns
 
+
+def load_image_file_names():
+    # Dropdown menu for image selection
+    image_folder = 'images'
+    image_files = [f for f in os.listdir(image_folder) if f.endswith('.npz')]
+    image_files.sort()
+
+    true_labels = []
+    for imgii in image_files:
+        imgpath = os.path.join(image_folder, imgii)
+        # print(imgpath)
+        data = np.load(imgpath)
+        true_labels.append('Pneumonia' if np.argmax(data['y']).astype(int)==1 else 'Normal')
+
+    image_names = [tl+"_img_"+imf.split('_')[-1].split('.')[0] for tl, imf in list(zip(true_labels, image_files))]
+    return image_names
+ 
+
 class MyBayesianModel:
     def __init__(self, model):
         self.model = model
@@ -84,25 +102,27 @@ non_medical_warning = """
     """
 st.markdown(non_medical_warning)
 
-st.sidebar.title("Settings")
+
+st.markdown("""**Select image and hit Predict!**""")
+interface_cols = st.columns(2)
+
+image_names = load_image_file_names()
+selected_image_file = interface_cols[0].selectbox("Select an Image", image_names)
+
+predict_image = interface_cols[1].button("Predict!")
+
+modifier_cols = st.columns(3)
+modifier_cols[0].markdown("""***Modifiers***""")
+modifier_cols[0].write("Flip Image: ")
+flip_image_h = modifier_cols[1].checkbox("Horizontal")
+flip_image_v = modifier_cols[2].checkbox("Vertical")
+
+
+
+st.sidebar.title(" Additional settings")
 
 # Sidebar slider for number of predictions
 n_iter = st.sidebar.slider("Number of Predictions", min_value=2, max_value=50, value=10)
-
-# Dropdown menu for image selection
-image_folder = 'images'
-image_files = [f for f in os.listdir(image_folder) if f.endswith('.npz')]
-image_files.sort()
-
-true_labels = []
-for imgii in image_files:
-    imgpath = os.path.join(image_folder, imgii)
-    # print(imgpath)
-    data = np.load(imgpath)
-    true_labels.append('Pneumonia' if np.argmax(data['y']).astype(int)==1 else 'Normal')
-
-image_names = [tl+"_img_"+imf.split('_')[-1].split('.')[0] for tl, imf in list(zip(true_labels, image_files))]
-selected_image_file = st.sidebar.selectbox("Select an Image", image_names)
 
 
 use_modified_img = st.sidebar.checkbox("Use modified Image")
@@ -110,10 +130,7 @@ use_modified_img = st.sidebar.checkbox("Use modified Image")
 alpha_val = st.sidebar.slider("Alpha (contrast)", min_value=0.0, max_value=3.0, value=1.0, step=0.1)
 beta_val = st.sidebar.slider("Beta (brightness)", min_value=0, max_value=100, value=0, step=1)
 
-flip_image_h = st.sidebar.checkbox("Flip Image (horizontal)")
-flip_image_v = st.sidebar.checkbox("Flip Image (vertical)")
 
-predict_image = st.sidebar.button("Predict!")
 
 
 
@@ -137,7 +154,7 @@ if selected_image_file:
         clamp=True,
         channels='BGR'
     )
-    img_cols[0].markdown(f"""{class_names[true_int]} (Original)""")
+    img_cols[0].markdown(f"""Chest X-Ray Type: {class_names[true_int]} (Original)""")
     if use_modified_img:
         pred_image = np.zeros(image.shape, image.dtype)
         for y in range(image.shape[0]):
@@ -156,7 +173,7 @@ if selected_image_file:
             clamp=True,
             channels='BGR'
         )
-        img_cols[1].markdown(f"""{class_names[true_int]} :red[(Modified)]""")
+        img_cols[1].markdown(f"""Chest X-Ray Type: {class_names[true_int]} :red[(Modified)]""")
 
     if predict_image:
         predicted_probabilities = make_predictions(model, pred_image, n_iter)
