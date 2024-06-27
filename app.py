@@ -97,7 +97,6 @@ for imgii in image_files:
 image_names = [tl+"_img_"+imf.split('_')[-1].split('.')[0] for tl, imf in list(zip(true_labels, image_files))]
 selected_image_file = st.sidebar.selectbox("Select an Image", image_names)
 
-select_img_size = st.sidebar.selectbox("Select image display size", ['small', 'medium', 'large'])
 
 use_modified_img = st.sidebar.checkbox("Use modified Image")
 
@@ -109,13 +108,7 @@ flip_image_v = st.sidebar.checkbox("Flip Image (vertical)")
 
 predict_image = st.sidebar.button("Predict!")
 
-img_size = (299, 299)
-if select_img_size == 'small':
-    img_size = (299, 299)
-if select_img_size == 'medium':
-    img_size = (600, 600)
-if select_img_size == 'large':
-    img_size = (1200, 1200)
+
 
 if selected_image_file:
     class_names = ['Normal', 'Pneumonia']
@@ -133,7 +126,6 @@ if selected_image_file:
         image / 255.,
         caption=f'Selected Image: {class_names[true_int]} (original)',
         use_column_width=True,
-        # width=img_size[0],
         clamp=True,
         channels='BGR'
     )
