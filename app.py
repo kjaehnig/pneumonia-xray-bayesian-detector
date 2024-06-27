@@ -97,10 +97,11 @@ with st.expander("Description"):
     """)
 
 non_medical_warning = """
-    :blue-background[:red[This app is entirely demonstrative and **SHOULD NOT** be used for any medical or diagnostic
-    purposes.]]
+    :red[This app is entirely demonstrative and **SHOULD NOT** be used for any medical or diagnostic
+    purposes.]
     """
-st.markdown(non_medical_warning)
+with st.expander("Warning"):
+    st.markdown(non_medical_warning)
 
 
 # st.markdown("""**Select image and hit Predict!**""")
