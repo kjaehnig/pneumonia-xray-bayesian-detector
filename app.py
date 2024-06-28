@@ -78,6 +78,55 @@ def make_predictions(model, image, n_iter):
     progressbar.empty()
     return predicted_probabilities
 
+
+def make_comparative_preds(model, images, n_iter):
+    progressbar = st.progress(0)
+
+    num_classes = 2  # Normal and Pneumonia
+    predicted_probabilities = np.empty(shape=(n_iter, num_classes))
+    for i, per in enumerate(np.linspace(0, 100, n_iter).astype('int')):
+        progressbar.progress(int(per), text=f'predicting: {per:.2f}%')
+        predicted_probabilities[i] = model(images).mean().numpy()[0]
+    progressbar.empty()
+    return predicted_probabilities
+
+
+def make_violin_fig(true_int, predicted_probabilities, class_names):
+    pct_2p5 = np.percentile(predicted_probabilities, 2.5, axis=0)
+    pct_97p5 = np.percentile(predicted_probabilities, 97.5, axis=0)
+    pct_50 = np.percentile(predicted_probabilities, 50, axis=0)
+
+    pred_int = np.argmax(pct_50)
+    pred_label = class_names[pred_int]
+
+    fig, ax = plt.subplots()
+    # bar = ax.bar(np.arange(2), pct_97p5, color='red')
+    # bar[true_int].set_color('green')
+    # ax.bar(np.arange(2), pct_2p5, lw=3, color='white', width=0.9)
+    violin_colors = [
+        'red' if true_int == 1 else 'green',
+        'red' if true_int == 0 else 'green'
+    ]
+
+    sns.violinplot(
+        predicted_probabilities,
+        palette=violin_colors
+    )
+    ax.set_xticks(np.arange(2))
+    ax.set_xticklabels(class_names)
+    ax.set_ylim([0, 1])
+    ax.set_ylabel('Probability', fontweight='bold')
+    # ax.set_xlabel(
+    #     f"{'CORRECT' if true_int == pred_int else 'INCORRECT'} Prediction",
+    #     color='green' if true_int == pred_int else 'red',
+    #     fontweight='bold')
+    ax.set_title(
+        f"{'CORRECT' if true_int == pred_int else 'INCORRECT'} Prediction: {pred_label}",
+        color='green' if pred_int == true_int else 'red',
+        fontweight='bold')
+
+    return fig, (pct_2p5, pct_50, pct_97p5)
+
 # Streamlit app
 st.title("Bayesian Pneumonia Detection")
 with st.expander("Description"):
@@ -187,46 +236,76 @@ if selected_image_file:
         img_cols[1].markdown(f"""Chest X-Ray Type: {class_names[true_int]} :red[(Modified)]""")
 
     if predict_image:
-        predicted_probabilities = make_predictions(model, pred_image, n_iter)
+        if use_modified_img:
+            predicted_probabilities = make_comparative_preds(model, [image, pred_image], n_iter)
+            
+            fig, (pct_2p5, pct_50, pct_97p5) = make_violin_fig(
+            true_int, 
+            predicted_probabilities[0], 
+            class_names
+            )
 
+            plot_cols = st.columns(2)
+            plot_cols[0].pyplot(fig)
+            plot_cols[0].write(f"Prediction Probabilities: 50, (2.5, 97.5)")
+            plot_cols[0].write(f"Normal: {pct_50[0]:.2f} ({pct_2p5[0]:.2f}, {pct_97p5[0]:.2f})")
+            plot_cols[0].write(f"Pneumonia: {pct_50[1]:.2f} ({pct_2p5[1]:.2f}, {pct_97p5[1]:.2f})")
+
+
+           fig, (pct_2p5, pct_50, pct_97p5) = make_violin_fig(
+            true_int, 
+            predicted_probabilities[1], 
+            class_names
+            )
+
+            plot_cols[1].pyplot(fig)
+            plot_cols[1].write(f"Prediction Probabilities: 50, (2.5, 97.5)")
+            plot_cols[1].write(f"Normal: {pct_50[0]:.2f} ({pct_2p5[0]:.2f}, {pct_97p5[0]:.2f})")
+            plot_cols[1].write(f"Pneumonia: {pct_50[1]:.2f} ({pct_2p5[1]:.2f}, {pct_97p5[1]:.2f})")
+        else:
+            predicted_probabilities = make_predictions(model, pred_image, n_iter)
+
+            fig, (pct_2p5, pct_50, pct_97p5) = make_violin_fig(
+            true_int, 
+            predicted_probabilities, 
+            class_names
+            )
+
+            st.pyplot(fig)
+            st.write(f"Prediction Probabilities: 50, (2.5, 97.5)")
+            st.write(f"Normal: {pct_50[0]:.2f} ({pct_2p5[0]:.2f}, {pct_97p5[0]:.2f})")
+            st.write(f"Pneumonia: {pct_50[1]:.2f} ({pct_2p5[1]:.2f}, {pct_97p5[1]:.2f})")
         # Calculate percentiles
-        pct_2p5 = np.percentile(predicted_probabilities, 2.5, axis=0)
-        pct_97p5 = np.percentile(predicted_probabilities, 97.5, axis=0)
-        pct_50 = np.percentile(predicted_probabilities, 50, axis=0)
+
 
         # Determine labels
-        pred_int = np.argmax(pct_50)
-        pred_label = class_names[pred_int]
+
 
         # Plot probabilities
-        fig, ax = plt.subplots()
-        # bar = ax.bar(np.arange(2), pct_97p5, color='red')
-        # bar[true_int].set_color('green')
-        # ax.bar(np.arange(2), pct_2p5, lw=3, color='white', width=0.9)
-        violin_colors = [
-            'red' if true_int == 1 else 'green',
-            'red' if true_int == 0 else 'green'
-        ]
+        # fig, ax = plt.subplots()
+        # # bar = ax.bar(np.arange(2), pct_97p5, color='red')
+        # # bar[true_int].set_color('green')
+        # # ax.bar(np.arange(2), pct_2p5, lw=3, color='white', width=0.9)
+        # violin_colors = [
+        #     'red' if true_int == 1 else 'green',
+        #     'red' if true_int == 0 else 'green'
+        # ]
 
-        sns.violinplot(
-            predicted_probabilities,
-            palette=violin_colors
-        )
-        ax.set_xticks(np.arange(2))
-        ax.set_xticklabels(class_names)
-        ax.set_ylim([0, 1])
-        ax.set_ylabel('Probability', fontweight='bold')
-        # ax.set_xlabel(
-        #     f"{'CORRECT' if true_int == pred_int else 'INCORRECT'} Prediction",
-        #     color='green' if true_int == pred_int else 'red',
+        # sns.violinplot(
+        #     predicted_probabilities[0],
+        #     palette=violin_colors
+        # )
+        # ax.set_xticks(np.arange(2))
+        # ax.set_xticklabels(class_names)
+        # ax.set_ylim([0, 1])
+        # ax.set_ylabel('Probability', fontweight='bold')
+        # # ax.set_xlabel(
+        # #     f"{'CORRECT' if true_int == pred_int else 'INCORRECT'} Prediction",
+        # #     color='green' if true_int == pred_int else 'red',
+        # #     fontweight='bold')
+        # ax.set_title(
+        #     f"{'CORRECT' if true_int == pred_int else 'INCORRECT'} Prediction: {pred_label}",
+        #     color='green' if pred_int == true_int else 'red',
         #     fontweight='bold')
-        ax.set_title(
-            f"{'CORRECT' if true_int == pred_int else 'INCORRECT'} Prediction: {pred_label}",
-            color='green' if pred_int == true_int else 'red',
-            fontweight='bold')
 
-        st.pyplot(fig)
 
-        st.write(f"Prediction Probabilities: 50, (2.5, 97.5)")
-        st.write(f"      Normal: {pct_50[0]:.2f} ({pct_2p5[0]:.2f}, {pct_97p5[0]:.2f})")
-        st.write(f"      Pneumonia: {pct_50[1]:.2f} ({pct_2p5[1]:.2f}, {pct_97p5[1]:.2f})")
