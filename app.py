@@ -121,7 +121,7 @@ def make_violin_fig(true_int, predicted_probabilities, class_names, tag='Origina
     #     f"{'CORRECT' if true_int == pred_int else 'INCORRECT'} Prediction",
     #     color='green' if true_int == pred_int else 'red',
     #     fontweight='bold')
-    fig.set_title(
+    ax.set_title(
         f"{tag}-{'CORRECT' if true_int == pred_int else 'INCORRECT'} Prediction: {pred_label}",
         color='green' if pred_int == true_int else 'red',
         fontweight='bold'
