@@ -243,7 +243,7 @@ if selected_image_file:
 
             fig, (pct_2p5, pct_50, pct_97p5) = make_violin_fig(
                 true_int, 
-                predicted_probabilities[0], 
+                predicted_probabilities[:, 0, :], 
                 class_names
             )
 
@@ -257,7 +257,7 @@ if selected_image_file:
 
             fig, (pct_2p5, pct_50, pct_97p5) = make_violin_fig(
                 true_int, 
-                predicted_probabilities[1], 
+                predicted_probabilities[:, 1, :], 
                 class_names
             )
 
