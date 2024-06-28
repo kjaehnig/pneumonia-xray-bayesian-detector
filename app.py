@@ -253,9 +253,9 @@ if selected_image_file:
 
 
            fig, (pct_2p5, pct_50, pct_97p5) = make_violin_fig(
-            true_int, 
-            predicted_probabilities[1], 
-            class_names
+                true_int, 
+                predicted_probabilities[1], 
+                class_names
             )
 
             plot_cols[1].pyplot(fig)
