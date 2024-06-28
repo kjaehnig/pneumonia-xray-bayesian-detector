@@ -168,7 +168,7 @@ flip_image_v = modifier_cols[1].checkbox("Vertical Flip")
 shot_switch = modifier_cols[2].checkbox("Shot Noise")
 use_modified_img = modifier_cols[3].checkbox("Use modified")
 
-predict_cols = st.columns([0.5, 0.2, 0.1, 0.1, 0.1])
+predict_cols = st.columns([0.5, 0.2, 0.1, 0.1, 0.1], vertical_alignment='center')
 predict_cols[0].markdown("""**Step 3 - :green[Perform image classification]**""")
 predict_image = predict_cols[1].button("Predict!")
 
