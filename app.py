@@ -88,6 +88,7 @@ def make_comparative_preds(model, images, n_iter):
         progressbar.progress(int(per), text=f'predicting: {per:.2f}%')
         predicted_probabilities[i, :, :] = model(images).mean().numpy()[0]
     progressbar.empty()
+    print(predicted_probabilities)
     return predicted_probabilities
 
 
