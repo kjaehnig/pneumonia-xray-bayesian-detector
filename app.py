@@ -73,7 +73,7 @@ def make_predictions(model, image, n_iter):
     num_classes = 2  # Normal and Pneumonia
     predicted_probabilities = np.empty(shape=(n_iter, num_classes))
     for i, per in enumerate(np.linspace(0, 100, n_iter).astype('int')):
-        progressbar.progress(int(per), text=f'predicting: {per:.2f}%')
+        progressbar.progress(int(per), text=f'predicting: {per-i:.2f}%')
         predicted_probabilities[i] = model(image[np.newaxis, :]).mean().numpy()[0]
     progressbar.empty()
     return predicted_probabilities
@@ -85,7 +85,7 @@ def make_comparative_preds(model, images, n_iter):
     num_classes = 2  # Normal and Pneumonia
     predicted_probabilities = np.empty(shape=(n_iter, len(images), num_classes))
     for i, per in enumerate(np.linspace(0, 100, n_iter).astype('int')):
-        progressbar.progress(int(per), text=f'predicting: {per:.2f}%')
+        progressbar.progress(int(per), text=f'predicting: {per-i:.2f}%')
         predicted_probabilities[i] = model(images).mean().numpy()
     progressbar.empty()
     return predicted_probabilities
@@ -184,7 +184,7 @@ alpha_val = st.sidebar.slider("Alpha (contrast)", min_value=0.0, max_value=3.0, 
 beta_val = st.sidebar.slider("Beta (brightness)", min_value=0, max_value=100, value=0, step=1)
 
 # shot_cols = st.sidebar.columns(2)
-shot_noise = st.sidebar.slider("Shot Noise (dead pixel) Threshold", min_value=0, max_value=255, step=1)
+shot_noise = st.sidebar.slider("Shot Noise Factor", min_value=0, max_value=1, step=0.05)
 # shot_switch = shot_cols[1].checkbox(" ")
 
 if selected_image_file:
@@ -224,7 +224,7 @@ if selected_image_file:
             # imp_noise=cv2.threshold(imp_noise, shot_noise, 255, cv2.THRESH_BINARY)[1]
             # pred_image = np.clip(cv2.add(pred_image, imp_noise), 0, 255)
             # pred_image = add_shot_noise(image, shot_noise)
-            pred_image = np.clip(pred_image + np.random.poisson(pred_image), 0, 255)
+            pred_image = np.clip(pred_image + shot_noise * np.random.poisson(pred_image), 0, 255)
 
 
 
