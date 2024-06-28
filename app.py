@@ -73,7 +73,7 @@ def make_predictions(model, image, n_iter):
     num_classes = 2  # Normal and Pneumonia
     predicted_probabilities = np.empty(shape=(n_iter, num_classes))
     for i, per in enumerate(np.linspace(0, 100, n_iter).astype('int')):
-        progressbar.progress(int(per), text=f'predicting: {int(100*i/n_iter)}%')
+        progressbar.progress(int(per), text=f'predicting: {int(100*(i+1)/n_iter)}%')
         predicted_probabilities[i] = model(image[np.newaxis, :]).mean().numpy()[0]
     progressbar.empty()
     return predicted_probabilities
@@ -85,7 +85,7 @@ def make_comparative_preds(model, images, n_iter):
     num_classes = 2  # Normal and Pneumonia
     predicted_probabilities = np.empty(shape=(n_iter, len(images), num_classes))
     for i, per in enumerate(np.linspace(0, 100, n_iter).astype('int')):
-        progressbar.progress(int(per), text=f'predicting: {int(100*i/n_iter)}%')
+        progressbar.progress(int(per), text=f'predicting: {int(100*(i+1)/n_iter)}%')
         predicted_probabilities[i] = model(images).mean().numpy()
     progressbar.empty()
     return predicted_probabilities
@@ -166,7 +166,7 @@ modifier_cols = st.columns(5)
 modifier_cols[0].write("Flip Image")
 flip_image_h = modifier_cols[1].checkbox("Horizontal")
 flip_image_v = modifier_cols[2].checkbox("Vertical")
-shot_switch = modifier_cols[3].checkbox("Seasoning")
+shot_switch = modifier_cols[3].checkbox("Shot Noise")
 use_modified_img = modifier_cols[4].checkbox("Use modified")
 
 predict_cols = st.columns([0.5, 0.2, 0.1, 0.1, 0.1])
