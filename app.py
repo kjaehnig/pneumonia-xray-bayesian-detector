@@ -240,9 +240,9 @@ if selected_image_file:
             predicted_probabilities = make_comparative_preds(model, [image, pred_image], n_iter)
             
             fig, (pct_2p5, pct_50, pct_97p5) = make_violin_fig(
-            true_int, 
-            predicted_probabilities[0], 
-            class_names
+                true_int, 
+                predicted_probabilities[0], 
+                class_names
             )
 
             plot_cols = st.columns(2)
@@ -266,9 +266,9 @@ if selected_image_file:
             predicted_probabilities = make_predictions(model, pred_image, n_iter)
 
             fig, (pct_2p5, pct_50, pct_97p5) = make_violin_fig(
-            true_int, 
-            predicted_probabilities, 
-            class_names
+                true_int, 
+                predicted_probabilities, 
+                class_names
             )
 
             st.pyplot(fig)
