@@ -162,12 +162,11 @@ selected_image_file = st.selectbox('Image Selector', image_names)
 
 
 st.markdown("""**Step 2 - :orange[Modify image (optional)]**""")
-modifier_cols = st.columns(5)
-modifier_cols[0].write("Flip Image")
-flip_image_h = modifier_cols[1].checkbox("Horizontal")
-flip_image_v = modifier_cols[2].checkbox("Vertical")
-shot_switch = modifier_cols[3].checkbox("Shot Noise")
-use_modified_img = modifier_cols[4].checkbox("Use modified")
+modifier_cols = st.columns(4)
+flip_image_h = modifier_cols[0].checkbox("Horizontal Flip")
+flip_image_v = modifier_cols[1].checkbox("Vertical Flip")
+shot_switch = modifier_cols[2].checkbox("Shot Noise")
+use_modified_img = modifier_cols[3].checkbox("Use modified")
 
 predict_cols = st.columns([0.5, 0.2, 0.1, 0.1, 0.1])
 predict_cols[0].markdown("""**Step 3 - :green[Perform image classification]**""")
