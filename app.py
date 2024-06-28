@@ -187,6 +187,12 @@ noise_type = st.sidebar.selectbox("Shot Noise Type", ['Poisson', 'Uniform'])
 shot_noise = st.sidebar.slider("Shot Noise Factor", min_value=0.0, max_value=1.0, step=0.05)
 # shot_switch = shot_cols[1].checkbox(" ")
 
+st.sidebar.link_button(
+    "Read more about this project", 
+    "https://kjaehnig.github.io/portfolio/projectE_pneumonia_bcnn/"
+    )
+
+
 if selected_image_file:
     class_names = ['Normal', 'Pneumonia']
 
