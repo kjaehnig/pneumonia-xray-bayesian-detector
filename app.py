@@ -252,7 +252,7 @@ if selected_image_file:
             plot_cols[0].write(f"Pneumonia: {pct_50[1]:.2f} ({pct_2p5[1]:.2f}, {pct_97p5[1]:.2f})")
 
 
-           fig, (pct_2p5, pct_50, pct_97p5) = make_violin_fig(
+            fig, (pct_2p5, pct_50, pct_97p5) = make_violin_fig(
                 true_int, 
                 predicted_probabilities[1], 
                 class_names
