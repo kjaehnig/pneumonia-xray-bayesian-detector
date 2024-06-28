@@ -121,10 +121,7 @@ def make_violin_fig(true_int, predicted_probabilities, class_names):
     #     f"{'CORRECT' if true_int == pred_int else 'INCORRECT'} Prediction",
     #     color='green' if true_int == pred_int else 'red',
     #     fontweight='bold')
-    ax.set_title(
-        f"{'CORRECT' if true_int == pred_int else 'INCORRECT'} Prediction: {pred_label}",
-        color='green' if pred_int == true_int else 'red',
-        fontweight='bold')
+
 
     return fig, (pct_2p5, pct_50, pct_97p5)
 
@@ -255,7 +252,11 @@ if selected_image_file:
                 predicted_probabilities[:, 0, :], 
                 class_names
             )
-
+            fig.ax[0].set_title(
+                f"{'CORRECT' if true_int == pred_int else 'INCORRECT'} Prediction: {pred_label}",
+                color='green' if pred_int == true_int else 'red',
+                fontweight='bold'
+                )
             plot_cols = st.columns(2)
 
             plot_cols[0].pyplot(fig)
