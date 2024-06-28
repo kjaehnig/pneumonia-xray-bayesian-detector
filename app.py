@@ -237,7 +237,10 @@ if selected_image_file:
 
     if predict_image:
         if use_modified_img:
-            predicted_probabilities = make_comparative_preds(model, np.array([image, pred_image]), n_iter)
+            predicted_probabilities = make_comparative_preds(
+                model, 
+                np.array([image, pred_image]).reshape(2,299,299,3), 
+                n_iter)
             
             st.write(predicted_probabilities)
 
