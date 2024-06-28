@@ -88,7 +88,6 @@ def make_comparative_preds(model, images, n_iter):
         progressbar.progress(int(per), text=f'predicting: {per:.2f}%')
         predicted_probabilities[i, :, :] = model(images).mean().numpy()[0]
     progressbar.empty()
-    print(predicted_probabilities)
     return predicted_probabilities
 
 
@@ -240,6 +239,8 @@ if selected_image_file:
         if use_modified_img:
             predicted_probabilities = make_comparative_preds(model, np.array([image, pred_image]), n_iter)
             
+            st.write(predicted_probabilities)
+
             fig, (pct_2p5, pct_50, pct_97p5) = make_violin_fig(
                 true_int, 
                 predicted_probabilities[0], 
