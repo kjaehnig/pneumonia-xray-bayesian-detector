@@ -162,7 +162,7 @@ st.markdown("""**Step 1 - :red[Select an image]**""")
 selected_image_file = st.selectbox('Image Selector', image_names)
 
 
-st.markdown("""**Step 2 - :orange[Modify image (optional)]**""")
+st.markdown("""**Step 2 - :orange[Modify image (optional)]** :blue-background[Additional modifiers in sidebar]""")
 modifier_cols = st.columns(4)
 flip_image_h = modifier_cols[0].checkbox("Horizontal Flip")
 flip_image_v = modifier_cols[1].checkbox("Vertical Flip")
