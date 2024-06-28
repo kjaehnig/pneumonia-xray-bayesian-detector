@@ -86,7 +86,7 @@ def make_comparative_preds(model, images, n_iter):
     predicted_probabilities = np.empty(shape=(n_iter, len(images), num_classes))
     for i, per in enumerate(np.linspace(0, 100, n_iter).astype('int')):
         progressbar.progress(int(per), text=f'predicting: {per:.2f}%')
-        predicted_probabilities[i] = model(images).mean().numpy()[0]
+        predicted_probabilities[i] = model(images[np.newaxis, :]).mean().numpy()[0]
     progressbar.empty()
     return predicted_probabilities
 
@@ -246,6 +246,7 @@ if selected_image_file:
             )
 
             plot_cols = st.columns(2)
+
             plot_cols[0].pyplot(fig)
             plot_cols[0].write(f"Prediction Probabilities: 50, (2.5, 97.5)")
             plot_cols[0].write(f"Normal: {pct_50[0]:.2f} ({pct_2p5[0]:.2f}, {pct_97p5[0]:.2f})")
