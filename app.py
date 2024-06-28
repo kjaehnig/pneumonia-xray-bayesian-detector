@@ -93,9 +93,9 @@ def make_comparative_preds(model, images, n_iter):
 
 def make_violin_fig(true_int, predicted_probabilities, class_names):
     predicted_probabilities = predicted_probabilities.reshape(st.session_state.n_iter, len(class_names))
-    pct_2p5 = np.percentile(predicted_probabilities, 2.5, axis=1)
-    pct_97p5 = np.percentile(predicted_probabilities, 97.5, axis=1)
-    pct_50 = np.percentile(predicted_probabilities, 50, axis=1)
+    pct_2p5 = np.percentile(predicted_probabilities, 2.5, axis=0)
+    pct_97p5 = np.percentile(predicted_probabilities, 97.5, axis=0)
+    pct_50 = np.percentile(predicted_probabilities, 50, axis=0)
 
     pred_int = np.argmax(pct_50)
     pred_label = class_names[pred_int]
@@ -195,7 +195,7 @@ if selected_image_file:
     file_path = os.path.join(image_folder, selected_img_path)
     data = np.load(file_path)
     image = data['x']
-    pred_image = image
+    pred_image = image.copy()
     true_int = np.argmax(data['y']).astype('int')
     # img = tf.image.resize(image, [299, 299, 3])  # Adjust size if necessary
     img_cols = st.columns(2)
@@ -221,7 +221,7 @@ if selected_image_file:
         if shot_switch:
             imp_noise=np.zeros((299, 299, 3),dtype=image.dtype)
             cv2.randu(imp_noise, 0, 255)
-            imp_noise=cv2.threshold(imp_noise, shot_noise, 255, cv2.THRESH_BINARY)[1]
+            imp_noise=cv2.threshold(imp_noise, shot_noise, 255, cv2.THRESH_BINARY)
             pred_image = np.clip(cv2.add(pred_image, imp_noise), 0, 255)
             # pred_image = add_shot_noise(image, shot_noise)
 
