@@ -224,7 +224,7 @@ if selected_image_file:
             # imp_noise=cv2.threshold(imp_noise, shot_noise, 255, cv2.THRESH_BINARY)[1]
             # pred_image = np.clip(cv2.add(pred_image, imp_noise), 0, 255)
             # pred_image = add_shot_noise(image, shot_noise)
-            pred_image = np.clip(pred_image + numpy.random.poisson(pred_image), 0, 255)
+            pred_image = np.clip(pred_image + np.random.poisson(pred_image), 0, 255)
 
 
 
