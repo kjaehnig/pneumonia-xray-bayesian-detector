@@ -225,7 +225,7 @@ if selected_image_file:
             # pred_image = np.clip(cv2.add(pred_image, imp_noise), 0, 255)
             # pred_image = add_shot_noise(image, shot_noise)
             if noise_type == "Gaussian":
-                noise_func = np.random.gaussian
+                noise_func = np.random.normal
             if noise_type == "Poisson":
                 noise_func = np.random.poisson
             if noise_type == "Uniform":
