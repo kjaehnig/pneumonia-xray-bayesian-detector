@@ -83,7 +83,7 @@ def make_comparative_preds(model, images, n_iter):
     progressbar = st.progress(0)
 
     num_classes = 2  # Normal and Pneumonia
-    predicted_probabilities = np.empty(shape=(n_iter, num_classes, len(images)))
+    predicted_probabilities = np.empty(shape=(n_iter, len(images), num_classes))
     for i, per in enumerate(np.linspace(0, 100, n_iter).astype('int')):
         progressbar.progress(int(per), text=f'predicting: {per:.2f}%')
         predicted_probabilities[i] = model(images[np.newaxis, :]).mean().numpy()[0]
