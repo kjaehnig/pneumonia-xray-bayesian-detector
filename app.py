@@ -73,7 +73,7 @@ def make_predictions(model, image, n_iter):
     num_classes = 2  # Normal and Pneumonia
     predicted_probabilities = np.empty(shape=(n_iter, num_classes))
     for i, per in enumerate(np.linspace(0, 100, n_iter).astype('int')):
-        progressbar.progress(int(per), text=f'predicting: {per-1:.2f}%')
+        progressbar.progress(int(per), text=f'predicting: {ii:.2f}%')
         predicted_probabilities[i] = model(image[np.newaxis, :]).mean().numpy()[0]
     progressbar.empty()
     return predicted_probabilities
@@ -85,7 +85,7 @@ def make_comparative_preds(model, images, n_iter):
     num_classes = 2  # Normal and Pneumonia
     predicted_probabilities = np.empty(shape=(n_iter, len(images), num_classes))
     for i, per in enumerate(np.linspace(0, 100, n_iter).astype('int')):
-        progressbar.progress(int(per), text=f'predicting: {per-1:.2f}%')
+        progressbar.progress(int(per), text=f'predicting: {ii:.2f}%')
         predicted_probabilities[i] = model(images).mean().numpy()[0]
     progressbar.empty()
     return predicted_probabilities
@@ -195,7 +195,7 @@ if selected_image_file:
     file_path = os.path.join(image_folder, selected_img_path)
     data = np.load(file_path)
     image = data['x']
-    pred_image = image.copy()
+    pred_image = image
     true_int = np.argmax(data['y']).astype('int')
     # img = tf.image.resize(image, [299, 299, 3])  # Adjust size if necessary
     img_cols = st.columns(2)
@@ -222,11 +222,9 @@ if selected_image_file:
             imp_noise=np.zeros((299, 299, 3),dtype=image.dtype)
             cv2.randu(imp_noise, 0, 255)
             imp_noise=cv2.threshold(imp_noise, shot_noise, 255, cv2.THRESH_BINARY)[1]
-            pred_image = np.array(
-                [np.clip(cv2.add(pred_image[:,:,ii], imp_noise), 0, 255) for ii in range(3)]
-                ).reshape(299,299,3)
-
+            pred_image = np.clip(cv2.add(pred_image, imp_noise), 0, 255)
             # pred_image = add_shot_noise(image, shot_noise)
+
 
 
         img_cols[1].image(
