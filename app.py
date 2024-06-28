@@ -169,9 +169,9 @@ flip_image_v = modifier_cols[2].checkbox("Vertical")
 shot_switch = modifier_cols[3].checkbox("Seasoning")
 use_modified_img = modifier_cols[4].checkbox("Use modified")
 
-predict_cols = st.columns(2)
+predict_cols = st.columns(3)
 predict_cols[0].markdown("""**Step 3 - :green[Perform image classification]**""")
-predict_image = predict_cols[1].button("Predict!")
+predict_image = predict_cols[2].button("Predict!")
 
 
 st.sidebar.title(" Additional settings")
