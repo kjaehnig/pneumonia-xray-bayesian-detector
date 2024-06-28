@@ -73,7 +73,7 @@ def make_predictions(model, image, n_iter):
     num_classes = 2  # Normal and Pneumonia
     predicted_probabilities = np.empty(shape=(n_iter, num_classes))
     for i, per in enumerate(np.linspace(0, 100, n_iter).astype('int')):
-        progressbar.progress(int(per), text=f'predicting: {ii:.2f}%')
+        progressbar.progress(int(per), text=f'predicting: {i:.2f}%')
         predicted_probabilities[i] = model(image[np.newaxis, :]).mean().numpy()[0]
     progressbar.empty()
     return predicted_probabilities
@@ -85,7 +85,7 @@ def make_comparative_preds(model, images, n_iter):
     num_classes = 2  # Normal and Pneumonia
     predicted_probabilities = np.empty(shape=(n_iter, len(images), num_classes))
     for i, per in enumerate(np.linspace(0, 100, n_iter).astype('int')):
-        progressbar.progress(int(per), text=f'predicting: {ii:.2f}%')
+        progressbar.progress(int(per), text=f'predicting: {i:.2f}%')
         predicted_probabilities[i] = model(images).mean().numpy()[0]
     progressbar.empty()
     return predicted_probabilities
