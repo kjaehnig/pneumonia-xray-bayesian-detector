@@ -92,6 +92,7 @@ def make_comparative_preds(model, images, n_iter):
 
 
 def make_violin_fig(true_int, predicted_probabilities, class_names):
+    predicted_probabilities = predicted_probabilities.reshape(-1,1)
     pct_2p5 = np.percentile(predicted_probabilities, 2.5, axis=0)
     pct_97p5 = np.percentile(predicted_probabilities, 97.5, axis=0)
     pct_50 = np.percentile(predicted_probabilities, 50, axis=0)
