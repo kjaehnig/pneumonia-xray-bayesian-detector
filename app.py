@@ -73,7 +73,7 @@ def make_predictions(model, image, n_iter):
     num_classes = 2  # Normal and Pneumonia
     predicted_probabilities = np.empty(shape=(n_iter, num_classes))
     for i, per in enumerate(np.linspace(0, 100, n_iter).astype('int')):
-        progressbar.progress(int(per), text=f'predicting: {per:.2f}%')
+        progressbar.progress(int(per)-1, text=f'predicting: {per:.2f}%')
         predicted_probabilities[i] = model(image[np.newaxis, :]).mean().numpy()[0]
     progressbar.empty()
     return predicted_probabilities
@@ -85,8 +85,8 @@ def make_comparative_preds(model, images, n_iter):
     num_classes = 2  # Normal and Pneumonia
     predicted_probabilities = np.empty(shape=(n_iter, len(images), num_classes))
     for i, per in enumerate(np.linspace(0, 100, n_iter).astype('int')):
-        progressbar.progress(int(per), text=f'predicting: {per:.2f}%')
-        predicted_probabilities[i] = model(images).mean().numpy()[0]
+        progressbar.progress(int(per)-1, text=f'predicting: {per:.2f}%')
+        predicted_probabilities[i] = model(images).mean(axis=0).numpy()[0]
     progressbar.empty()
     return predicted_probabilities
 
@@ -240,10 +240,9 @@ if selected_image_file:
         if use_modified_img:
             predicted_probabilities = make_comparative_preds(
                 model, 
-                np.array([image, pred_image]).reshape(2,299,299,3), 
+                np.array([image, pred_image]), 
                 n_iter)
             
-            st.write(predicted_probabilities)
 
             fig, (pct_2p5, pct_50, pct_97p5) = make_violin_fig(
                 true_int, 
