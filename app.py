@@ -237,7 +237,7 @@ if selected_image_file:
 
     if predict_image:
         if use_modified_img:
-            predicted_probabilities = make_comparative_preds(model, [image, pred_image], n_iter)
+            predicted_probabilities = make_comparative_preds(model, np.array([image, pred_image]), n_iter)
             
             fig, (pct_2p5, pct_50, pct_97p5) = make_violin_fig(
                 true_int, 
