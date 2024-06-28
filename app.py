@@ -221,10 +221,12 @@ if selected_image_file:
         if shot_switch:
             imp_noise=np.zeros((299, 299, 3),dtype=image.dtype)
             cv2.randu(imp_noise, 0, 255)
-            imp_noise=cv2.threshold(imp_noise, shot_noise, 255, cv2.THRESH_BINARY)
-            pred_image = np.clip(cv2.add(pred_image, imp_noise), 0, 255)
-            # pred_image = add_shot_noise(image, shot_noise)
+            imp_noise=cv2.threshold(imp_noise, shot_noise, 255, cv2.THRESH_BINARY)[1]
+            pred_image = np.array(
+                [np.clip(cv2.add(pred_image[:,:,ii], imp_noise), 0, 255) for ii in range(3)]
+                ).reshape(299,299,3)
 
+            # pred_image = add_shot_noise(image, shot_noise)
 
 
         img_cols[1].image(
