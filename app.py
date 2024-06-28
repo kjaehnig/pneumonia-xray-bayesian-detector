@@ -91,7 +91,7 @@ def make_comparative_preds(model, images, n_iter):
     return predicted_probabilities
 
 
-def make_violin_fig(true_int, predicted_probabilities, class_names):
+def make_violin_fig(true_int, predicted_probabilities, class_names, tag='Original'):
     predicted_probabilities = predicted_probabilities.reshape(st.session_state.n_iter, len(class_names))
     pct_2p5 = np.percentile(predicted_probabilities, 2.5, axis=0)
     pct_97p5 = np.percentile(predicted_probabilities, 97.5, axis=0)
@@ -121,7 +121,11 @@ def make_violin_fig(true_int, predicted_probabilities, class_names):
     #     f"{'CORRECT' if true_int == pred_int else 'INCORRECT'} Prediction",
     #     color='green' if true_int == pred_int else 'red',
     #     fontweight='bold')
-
+    fig.set_title(
+        f"{tag}-{'CORRECT' if true_int == pred_int else 'INCORRECT'} Prediction: {pred_label}",
+        color='green' if pred_int == true_int else 'red',
+        fontweight='bold'
+        )
 
     return fig, (pct_2p5, pct_50, pct_97p5)
 
@@ -250,13 +254,10 @@ if selected_image_file:
             fig, (pct_2p5, pct_50, pct_97p5) = make_violin_fig(
                 true_int, 
                 predicted_probabilities[:, 0, :], 
-                class_names
+                class_names,
+                'Original'
             )
-            fig.ax[0].set_title(
-                f"{'CORRECT' if true_int == pred_int else 'INCORRECT'} Prediction: {pred_label}",
-                color='green' if pred_int == true_int else 'red',
-                fontweight='bold'
-                )
+
             plot_cols = st.columns(2)
 
             plot_cols[0].pyplot(fig)
@@ -268,7 +269,8 @@ if selected_image_file:
             fig, (pct_2p5, pct_50, pct_97p5) = make_violin_fig(
                 true_int, 
                 predicted_probabilities[:, 1, :], 
-                class_names
+                class_names,
+                'Modified'
             )
 
             plot_cols[1].pyplot(fig)
