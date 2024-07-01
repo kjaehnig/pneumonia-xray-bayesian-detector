@@ -252,7 +252,8 @@ if selected_image_file:
                     [0] * n_blk_pix + [255] * n_wht_pix + [-1] * 
                     (total_pixels - n_blk_pix - n_wht_pix)
                 )
-                mask = mask_flat.reshape((299, 299))
+
+                mask = np.random.shuffle(mask_flat).reshape((299, 299))
                 mask_3d = np.stack([mask] * 3, axis=-1)
                 pred_image = np.where(mask_3d == -1, pred_image, mask_3d)
 
