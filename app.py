@@ -113,7 +113,7 @@ def make_violin_fig(true_int, predicted_probabilities, class_names, tag='Origina
         predicted_probabilities,
         palette=violin_colors,
         cut=0,
-        inner='stick'
+        inner='box'
     )
     ax.set_xticks(np.arange(2))
     ax.set_xticklabels(class_names)
