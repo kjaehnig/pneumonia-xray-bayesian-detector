@@ -146,6 +146,10 @@ with st.expander("Description"):
     This AI model demonstrates significant potential in assisting medical diagnostics by offering quick and 
     reliable pneumonia detection from chest X-rays, improving treatment outcomes and resource allocation in healthcare.
     """)
+    st.link_button(
+    "Read more about this project", 
+    "https://kjaehnig.github.io/portfolio/projectE_pneumonia_bcnn/"
+    )
 
 non_medical_warning = """
     :red[This app is entirely demonstrative and **SHOULD NOT** be used for any medical or diagnostic
@@ -185,7 +189,7 @@ beta_val = st.sidebar.slider("Beta (brightness)", min_value=0, max_value=100, va
 # shot_cols = st.sidebar.columns(2)
 noise_type = st.sidebar.selectbox("Noise Type", ['Normal', 'Poisson', 'Uniform', 'Salt & Pepper'])
 shot_noise = st.sidebar.slider("Noise Factor", min_value=0.0, max_value=1.0, step=0.05, value=0.5)
-shot_ratio = st.sidebar.slider("Salt:Pepper", min_value=0.0, max_value=1.0, step=0.05, value=0.5)
+shot_ratio = st.sidebar.slider("Salt-Pepper Noise Ratio", min_value=0.0, max_value=1.0, step=0.05, value=0.5)
 # shot_switch = shot_cols[1].checkbox(" ")
 
 st.sidebar.link_button(
