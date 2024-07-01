@@ -256,7 +256,7 @@ if selected_image_file:
                 np.random.shuffle(mask_flat)
                 mask = mask_flat.reshape((299, 299))
                 mask_3d = np.stack([mask] * 3, axis=-1)
-                pred_image = np.where(mask_3d == -1, pred_image, mask_3d)
+                pred_image = np.clip(np.where(mask_3d == -1, pred_image, mask_3d), 0, 255)
 
 
         img_cols[1].image(
