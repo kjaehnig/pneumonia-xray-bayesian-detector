@@ -111,7 +111,9 @@ def make_violin_fig(true_int, predicted_probabilities, class_names, tag='Origina
 
     sns.violinplot(
         predicted_probabilities,
-        palette=violin_colors
+        palette=violin_colors,
+        cut=0,
+        inner='quart'
     )
     ax.set_xticks(np.arange(2))
     ax.set_xticklabels(class_names)
