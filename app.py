@@ -166,7 +166,7 @@ st.markdown("""**Step 2 - :orange[Modify image (optional)]** :blue[Additional mo
 modifier_cols = st.columns(4)
 flip_image_h = modifier_cols[0].checkbox("Horizontal Flip")
 flip_image_v = modifier_cols[1].checkbox("Vertical Flip")
-shot_switch = modifier_cols[2].checkbox("Shot Noise")
+shot_switch = modifier_cols[2].checkbox("Noise")
 use_modified_img = modifier_cols[3].checkbox("Use modified")
 
 predict_cols = st.columns([0.5, 0.2, 0.1, 0.1, 0.1])
@@ -183,8 +183,9 @@ alpha_val = st.sidebar.slider("Alpha (contrast)", min_value=0.0, max_value=3.0, 
 beta_val = st.sidebar.slider("Beta (brightness)", min_value=0, max_value=100, value=0, step=1)
 
 # shot_cols = st.sidebar.columns(2)
-noise_type = st.sidebar.selectbox("Shot Noise Type", ['Normal', 'Poisson', 'Uniform'])
-shot_noise = st.sidebar.slider("Shot Noise Factor", min_value=0.0, max_value=1.0, step=0.05)
+noise_type = st.sidebar.selectbox("Noise Type", ['Normal', 'Poisson', 'Uniform', 'Salt & Pepper'])
+shot_noise = st.sidebar.slider("Noise Factor", min_value=0.0, max_value=1.0, step=0.05, value=0.5)
+shot_ratio = st.sidebar.slider("Salt:Pepper", min_value=0.0, max_value=1.0, step=0.05, value=0.5)
 # shot_switch = shot_cols[1].checkbox(" ")
 
 st.sidebar.link_button(
@@ -231,15 +232,29 @@ if selected_image_file:
             # pred_image = np.clip(cv2.add(pred_image, imp_noise), 0, 255)
             # pred_image = add_shot_noise(image, shot_noise)
 
-            if noise_type == "Poisson":
-                noise_func = np.random.poisson
-            if noise_type == "Uniform":
-                noise_func = np.random.uniform
-            if noise_type == 'Normal':
-                noise_func = np.random.normal
-            pred_image = np.clip(pred_image + shot_noise * noise_func(pred_image), 0, 255)
+            if noise_type != "Salt & Pepper"
+                if noise_type == "Poisson":
+                    noise_func = np.random.poisson
+                if noise_type == "Uniform":
+                    noise_func = np.random.uniform
+                if noise_type == 'Normal':
+                    noise_func = np.random.normal
+                pred_image = np.clip(pred_image + shot_noise * noise_func(pred_image), 0, 255)
+            else:
+                frac_salt = shot_ratio
+                frac_pepper = 1. - shot_ratio
+                total_pixels = pred_image.shape[0] * pred_image.shape[1]
 
+                n_blk_pix = int(total_pixels * frac_pepper * shot_noise)
+                n_wht_pix = int(total_pixels * frac_salt * shot_noise)
 
+                mask_flat = np.array(
+                    [0] * n_blk_pix + [255] * n_wht_pix + [-1] * 
+                    (total_pixels - n_blk_pix - n_wht_pix)
+                )
+                mask = mask_flat.reshape((299, 299))
+                mask_3d = np.stack([mask] * 3, axis=-1)
+                pred_image = np.where(mask_3d == -1, pred_image, mask_3d)
 
 
         img_cols[1].image(
