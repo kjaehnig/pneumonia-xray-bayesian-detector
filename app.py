@@ -183,7 +183,7 @@ alpha_val = st.sidebar.slider("Alpha (contrast)", min_value=0.0, max_value=3.0, 
 beta_val = st.sidebar.slider("Beta (brightness)", min_value=0, max_value=100, value=0, step=1)
 
 # shot_cols = st.sidebar.columns(2)
-noise_type = st.sidebar.selectbox("Shot Noise Type", ['Poisson', 'Uniform'])
+noise_type = st.sidebar.selectbox("Shot Noise Type", ['Normal', 'Poisson', 'Uniform'])
 shot_noise = st.sidebar.slider("Shot Noise Factor", min_value=0.0, max_value=1.0, step=0.05)
 # shot_switch = shot_cols[1].checkbox(" ")
 
@@ -235,6 +235,8 @@ if selected_image_file:
                 noise_func = np.random.poisson
             if noise_type == "Uniform":
                 noise_func = np.random.uniform
+            if noise_type == 'Normal':
+                noise_func = np.random.normal
             pred_image = np.clip(pred_image + shot_noise * noise_func(pred_image), 0, 255)
 
 
