@@ -113,7 +113,7 @@ def make_violin_fig(true_int, predicted_probabilities, class_names, tag='Origina
         predicted_probabilities,
         palette=violin_colors,
         cut=0,
-        inner='quart'
+        inner='stick'
     )
     ax.set_xticks(np.arange(2))
     ax.set_xticklabels(class_names)
@@ -124,7 +124,7 @@ def make_violin_fig(true_int, predicted_probabilities, class_names, tag='Origina
     #     color='green' if true_int == pred_int else 'red',
     #     fontweight='bold')
     ax.set_title(
-        f"{tag} Image-Prediction: {pred_label}[{'Correct' if true_int == pred_int else 'INCORRECT'}]",
+        f"{tag} Image Prediction: {pred_label} [{'Correct' if true_int == pred_int else 'Incorrect'}]",
         color='green' if pred_int == true_int else 'red',
         fontweight='bold'
         )
