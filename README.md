@@ -12,7 +12,7 @@ There are also sliders and a dropdown list to select different types of image no
 
 |  |  |  |  |  |
 |:---:|:---:|:---:|:---:|:---:|
-|Unmodified|Normal Noise|Poisson Noise|Uniform Noise|Salt/Pepper Noise|
+|Unmodified|Normal Noise|Poisson Noise|Uniform Noise|Salt-Pepper Noise|
 |![Unmodified](pneumonia-webapp-unmodified.png)|![Normal Noise](pneumonia-webapp-normal-noise.png)|![Poisson Noise](pneumonia-webapp-poisson-noise.png)|![Uniform Noise](pneumonia-webapp-uniform-noise.png)|![Salt & Pepper Noise](pneumonia-webapp-s&p-noise.png)
 
 
