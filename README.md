@@ -10,7 +10,6 @@ This app contains a number of options in the sidebar that modify test images:
 
 There are also sliders and a dropdown list to select different types of image noise to add to the image before performing classification. The five images below illustrate the unmodified and noise-added images.
 
-|:-:|:-:|:-:|:-:|:-:|
 |![Unmodified](pneumonia-webapp-unmodified.png)|![Normal Noise](pneumonia-webapp-normal-noise.png)|![Poisson Noise](pneumonia-webapp-poisson-noise.png)|![Uniform Noise](pneumonia-webapp-uniform-noise.png)|![Salt & Pepper Noise](pneumonia-webapp-s&p-noise.png)
 
 
